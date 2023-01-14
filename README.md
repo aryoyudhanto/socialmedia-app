@@ -30,7 +30,7 @@ This is a [React.js](https://reactjs.org/) project bootstrapped with [`create vi
 
 1. Clone repo:
 ```sh
-   git clone 
+   git clone https://github.com/aryoyudhanto/group1-socialmedia-app
    ```
 2. Install package
 ```sh

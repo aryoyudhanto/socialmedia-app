@@ -1,7 +1,7 @@
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 
 import LandingPage from '../pages'
-import Contoh from '../pages/Contoh'
+import Login from '../pages/Login'
 
 const router = createBrowserRouter([
     {
@@ -9,8 +9,8 @@ const router = createBrowserRouter([
         element: <LandingPage />,
     },
     {
-        path: "/contoh",
-        element: <Contoh />,
+        path: "/login",
+        element: <Login />,
     },
 ])
 

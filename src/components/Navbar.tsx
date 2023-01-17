@@ -3,7 +3,7 @@ import logoSosmed from "../assets/logoSosmed.svg";
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-white shadow">
+    <div className="navbar bg-white shadow sticky top-0 z-50">
       <div className="navbar-start">
         <img src={logoSosmed} alt="logo-app" className="w-20" />
         <a className="btn btn-ghost normal-case text-md text-[#0D99FF]">

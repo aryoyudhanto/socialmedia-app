@@ -1,9 +1,35 @@
-import React from 'react'
+import React from "react";
+import {
+  CardProfil,
+  CardRecomendation,
+  CardStatusImage,
+  CardStatusInput,
+  CardStatusShow,
+} from "../components/Card";
+import Layout from "../components/Layout";
 
 const LandingPage = () => {
   return (
-    <div className='text-5xl text-red-500'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ullam soluta ea, minima quos asperiores illum modi accusantium sequi, officia inventore, sunt libero? Nihil assumenda eos et suscipit non, ipsa officia! Culpa necessitatibus illum natus qui vitae dolor aut ullam!</div>
-  )
-}
+    <Layout>
+      <div className="container mx-auto">
+        <div className="flex flex-row justify-center">
+          <div className="basis-1/4 p-5">
+            <CardProfil />
+          </div>
+          <div className="basis-1/2 flex-col justify-center py-5">
+            <CardStatusInput />
+            <br />
+            <CardStatusShow />
+            <br />
+            <CardStatusImage />
+          </div>
+          <div className="basis-1/4 p-5">
+            <CardRecomendation />
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
 
-export default LandingPage
+export default LandingPage;

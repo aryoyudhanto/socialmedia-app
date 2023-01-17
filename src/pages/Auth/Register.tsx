@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import register from '../assets/bg-register1.png'
+import register from '../../assets/bg-register1.png'
 
 const Register = () => {
     return (

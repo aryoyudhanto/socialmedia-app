@@ -1,9 +1,10 @@
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 
 import LandingPage from '../pages'
-import Login from '../pages/Login'
-import Register from '../pages/Register'
+import Login from '../pages/Auth/Login'
+import Register from '../pages/Auth/Register'
 import ProfilePage from '../pages/ProfilePage'
+import DetailPage from '../pages/DetailPage'
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     {
         path: "/profile",
         element: <ProfilePage />,
+    },
+    {
+        path: "/post",
+        element: <DetailPage />,
     },
 ])
 

@@ -113,7 +113,7 @@ export const CardStatusInput = () => {
 
 export const CardStatusShow = () => {
   return (
-    <div className="card w-full bg-white pb-5 shadow-lg">
+    <div className="card w-full bg-white pb-5 shadow-md">
       <div className="flex flex-row justify-around">
         <div className="pl-10 py-5">
           <label className="btn btn-ghost btn-circle avatar">
@@ -172,7 +172,7 @@ export const CardStatusShow = () => {
 
 export const CardStatusImage = () => {
   return (
-    <div className="card w-full  bg-white pb-5">
+    <div className="card w-full  bg-white pb-5 shadow-md">
       <div className="flex flex-row justify-between">
         <div className="pl-10 py-5 ">
           <h6 className="text-black font-bold">Nama Account</h6>

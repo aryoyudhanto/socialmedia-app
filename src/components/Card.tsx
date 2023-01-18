@@ -1,12 +1,15 @@
 import Button from "./Button";
 import { Input, TextArea } from "./Input";
 import { FiImage, FiMoreHorizontal, FiMessageCircle } from "react-icons/fi";
+import { FC } from "react";
 
 interface CardProps {
-  title: string;
-  image: string;
-  id: number;
-  labelButton: string;
+  name?: string;
+  image?: string;
+  id?: number;
+  labelButton?: string;
+  create_at?: string;
+  content?: string;
 }
 
 export const CardProfil = () => {
@@ -116,7 +119,12 @@ export const CardStatusInput = () => {
   );
 };
 
-export const CardStatusShow = () => {
+export const CardStatusShow: FC<CardProps> = ({
+  id,
+  name,
+  create_at,
+  content,
+}) => {
   return (
     <div className="card w-full bg-white pb-5 shadow-md">
       <div className="flex flex-row justify-around">
@@ -129,9 +137,9 @@ export const CardStatusShow = () => {
           </div>
         </div>
         <div className="w-96 pt-5 ">
-          <h6 className="text-black font-bold">Nama Account</h6>
-          <p className="text-sm">date update</p>
-          <h3 className="text-black font-semibold text-lg pt-5">Status user</h3>
+          <h6 className="text-black font-bold">{name}</h6>
+          <p className="text-sm">{create_at}</p>
+          <h3 className="text-black font-semibold text-lg pt-5">{content}</h3>
 
           <button className="btn btn-ghost gap-2 text-xs normal-case ">
             <FiMessageCircle size={16} />
@@ -196,7 +204,13 @@ export const CardStatusShow = () => {
   );
 };
 
-export const CardStatusImage = () => {
+export const CardStatusImage: FC<CardProps> = ({
+  id,
+  name,
+  create_at,
+  content,
+  image,
+}) => {
   return (
     <div className="card w-full bg-white pb-5 shadow-md">
       <div className="flex flex-row justify-around">
@@ -209,14 +223,11 @@ export const CardStatusImage = () => {
           </div>
         </div>
         <div className="w-96 pt-5 ">
-          <h6 className="text-black font-bold">Nama Account</h6>
-          <p className="text-sm">date update</p>
+          <h6 className="text-black font-bold">{name}</h6>
+          <p className="text-sm">{create_at}</p>
+          <h3 className="text-black font-semibold text-lg pt-5">{content}</h3>
           <figure className="w-auto h-auto py-5 ">
-            <img
-              src="https://placeimg.com/400/225/arch"
-              alt="Shoes"
-              className="rounded-xl"
-            />
+            <img src={image} alt="Shoes" className="rounded-xl" />
           </figure>
           <button className="btn btn-ghost gap-2 text-xs normal-case ">
             <FiMessageCircle size={16} />
@@ -281,7 +292,12 @@ export const CardStatusImage = () => {
   );
 };
 
-export const CardStatusShowDetail = () => {
+export const CardStatusShowDetail: FC<CardProps> = ({
+  name,
+  content,
+  create_at,
+  image,
+}) => {
   return (
     <div className="card w-full bg-white pb-5 shadow-lg pr-3">
       <div className="flex flex-row justify-items-stretch">
@@ -293,8 +309,8 @@ export const CardStatusShowDetail = () => {
           </label>
         </div>
         <div className="pl-5 w-96 py-5 ">
-          <h6 className="text-black font-bold">Nama Account</h6>
-          <p className="text-sm">date update</p>
+          <h6 className="text-black font-bold">{name}</h6>
+          <p className="text-sm">{create_at}</p>
         </div>
         <div className="ml-auto mr-10 py-5">
           <a>
@@ -305,17 +321,13 @@ export const CardStatusShowDetail = () => {
       <div className=" flex flex-row justify-between">
         <div className="pl-10">
           <figure>
-            <img
-              src="https://placeimg.com/400/225/arch"
-              alt="Shoes"
-              className="rounded-xl w-80"
-            />
+            <img src={image} alt="Shoes" className="rounded-xl w-80" />
           </figure>
         </div>
         <div className="flex-col w-1/2 pl-5">
           <div className="flex flex-row justify-around">
             <div className="w-96 py-5">
-              <h3 className="text-black font-semibold text-lg ">Status user</h3>
+              <h3 className="text-black font-semibold text-lg ">{content}</h3>
               <div className="flex flex-row justify-start gap-2 pt-2">
                 <a>
                   <FiMessageCircle size={20} />

@@ -1,9 +1,33 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useCookies } from 'react-cookie'
+import React, { useState } from 'react'
+import axios from 'axios'
 
 import login from '../../assets/bg-login1.png'
 
 const Login = () => {
+    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const [cookie, setCookie] = useCookies<string>([])
+    const navigate = useNavigate()
+
+    function authLogin(e: React.FormEvent<HTMLFormElement>){
+        e.preventDefault();
+        axios.post('http://54.254.27.167/login', {
+            email: email,
+            password: password,
+        })
+        .then((res)=>{
+            const {token} =res.data
+            setCookie("token", token)
+            alert('berhasil login')
+            navigate('/')
+        })
+        .catch((err)=>{
+            alert('gagal login')
+        })
+    }
+    
     return (
         <div className='flex w-full h-screen bg-white'>
             <div className="relative flex flex-col w-full h-screen bg-dark-alta">
@@ -11,7 +35,7 @@ const Login = () => {
                     <div className="flex flex-col justify-center w-[400px]">
                         <form
                             className="w-full mx-auto rounded-2xl bg-[#e5e5e5] p-8 px-8 h-[480px] shadow-2xl"
-                        // onSubmit={authLogin}
+                        onSubmit={(e)=>authLogin(e)}
                         >
                             <h2 className="text-4xl text-black text-center font-bold">Login</h2>
                             <div className='my-5 h-6'>
@@ -22,7 +46,7 @@ const Login = () => {
                                 <label className="font-semibold text-[#0D99FF]">Email</label>
                                 <input
                                     // value={email}
-                                    // onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     className="rounded-lg bg-white mt-2 p-2 border-2 focus:outline-none text-black"
                                     type="email"
                                     placeholder="yourname@email.com"
@@ -32,7 +56,7 @@ const Login = () => {
                                 <label className="font-semibold text-[#0D99FF]">Password</label>
                                 <input
                                     // value={password}
-                                    // onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     type="password"
                                     className="p-2 rounded-lg bg-white mt-2 border-2 focus:outline-none text-black"
                                     placeholder="Password"

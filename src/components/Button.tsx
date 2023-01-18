@@ -2,11 +2,12 @@ import { ButtonHTMLAttributes, FC } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
+  buttonSet?: string;
 }
 
-const Button: FC<ButtonProps> = ({ label, ...props }) => {
+const Button: FC<ButtonProps> = ({ label, buttonSet, ...props }) => {
   return (
-    <button className="btn w-full tracking-wider" {...props}>
+    <button className={`btn w-full tracking-wider ${buttonSet}`} {...props}>
       {label}
     </button>
   );

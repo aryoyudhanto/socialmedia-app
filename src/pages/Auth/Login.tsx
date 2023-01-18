@@ -6,28 +6,39 @@ import axios from 'axios'
 import login from '../../assets/bg-login1.png'
 
 const Login = () => {
-    const [email, setEmail] = useState<string>("")
+    const [emailOrUsername, setEmailOrUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [cookie, setCookie] = useCookies<string>([])
     const navigate = useNavigate()
 
-    function authLogin(e: React.FormEvent<HTMLFormElement>){
+    function authLogin(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        axios.post('http://54.254.27.167/login', {
-            email: email,
-            password: password,
-        })
-        .then((res)=>{
-            const {token} =res.data
-            setCookie("token", token)
-            alert('berhasil login')
-            navigate('/')
-        })
-        .catch((err)=>{
-            alert('gagal login')
-        })
+        let body;
+        let regexEmail = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
+
+        if (regexEmail.test(emailOrUsername)) {
+            body = { 
+                email: emailOrUsername, 
+                password: password 
+            }
+        } else {
+            body = { 
+                username: emailOrUsername, 
+                password: password,
+            }
+        }
+        axios.post('http://54.254.27.167/login', body)
+            .then((res) => {
+                const { token } = res.data
+                setCookie("token", token)
+                alert('berhasil login')
+                navigate('/')
+            })
+            .catch((err) => {
+                alert('gagal login')
+            })
     }
-    
+
     return (
         <div className='flex w-full h-screen bg-white'>
             <div className="relative flex flex-col w-full h-screen bg-dark-alta">
@@ -35,7 +46,7 @@ const Login = () => {
                     <div className="flex flex-col justify-center w-[400px]">
                         <form
                             className="w-full mx-auto rounded-2xl bg-[#e5e5e5] p-8 px-8 h-[480px] shadow-2xl"
-                        onSubmit={(e)=>authLogin(e)}
+                            onSubmit={(e) => authLogin(e)}
                         >
                             <h2 className="text-4xl text-black text-center font-bold">Login</h2>
                             <div className='my-5 h-6'>
@@ -43,19 +54,17 @@ const Login = () => {
                             </div>
 
                             <div className="flex flex-col py-2">
-                                <label className="font-semibold text-[#0D99FF]">Email</label>
+                                <label className="font-semibold text-[#0D99FF]">Username or Email</label>
                                 <input
-                                    // value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) => setEmailOrUsername(e.target.value)}
                                     className="rounded-lg bg-white mt-2 p-2 border-2 focus:outline-none text-black"
-                                    type="email"
-                                    placeholder="yourname@email.com"
+                                    type="text"
+                                    placeholder="username or email"
                                 />
                             </div>
                             <div className="flex flex-col py-2">
                                 <label className="font-semibold text-[#0D99FF]">Password</label>
                                 <input
-                                    // value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     type="password"
                                     className="p-2 rounded-lg bg-white mt-2 border-2 focus:outline-none text-black"

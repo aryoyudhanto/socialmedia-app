@@ -1,16 +1,44 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 import register from '../../assets/bg-register1.png'
 
 const Register = () => {
+    const [fullName, setFullName] = useState<string>("")
+    const [email, setEmail] = useState<string>("")
+    const [userName, setUserName] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const navigate = useNavigate()
+
+    function registerHandler(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        axios.post('http://54.254.27.167/register', {
+            name: fullName,
+            username: userName,
+            email: email,
+            password: password,
+        })
+            .then((res) => {
+                alert('berhasil register')
+                navigate('/login')
+            })
+            .catch((err) => {
+                alert('gagal register')
+            })
+
+    }
+    console.log("nama", fullName)
+    console.log("email", email)
+    console.log("username", userName)
+    console.log("pass", password)
     return (
         <div className='flex w-full h-screen bg-white'>
             <div className='w-full h-full bg-no-repeat bg-cover' style={{ backgroundImage: `url( ${register})` }}>
                 <div className='h-full flex justify-center items-center'>
                     <div className='w-1/2 h-3/4 flex justify-center bg-gray-300 rounded-2xl shadow-2xl'>
                         <form className="w-[90%] align-middle m-10 "
-                        // onSubmit={(e) => registerHandler(e)}
+                            onSubmit={(e) => registerHandler(e)}
                         >
                             <h2 className="text-4xl text-black text-center font-bold">Register</h2>
                             <div className="flex flex-col py-2">
@@ -21,11 +49,10 @@ const Register = () => {
                                 </div>
                                 <div className="">
                                     <input className="bg-white appearance-none border-2 border-[#D9D9D9] rounded-2xl w-full py-2 px-4 text-black leading-tight focus:outline-none focus:bg-white h-14 "
-                                        // disabled value={"Aryo Yudhanto"}
                                         id="inline-full-name"
                                         type="text"
                                         placeholder='Full Name'
-                                    // onChange={(e) => { setNameReg(e.target.value) }} 
+                                        onChange={(e) => { setFullName(e.target.value) }}
                                     />
                                 </div>
                             </div>
@@ -39,7 +66,7 @@ const Register = () => {
                                     <input className="bg-white appearance-none border-2 border-[#D9D9D9] rounded-2xl  w-full py-2 px-4 text-black leading-tight focus:outline-none focus:bg-white h-14" id="inline-email"
                                         type="email"
                                         placeholder='yourname@email.com'
-                                    // onChange={(e) => { setEmailReg(e.target.value) }} 
+                                        onChange={(e) => { setEmail(e.target.value) }}
                                     />
                                 </div>
                             </div>
@@ -53,7 +80,7 @@ const Register = () => {
                                     <input className="bg-white appearance-none border-2 border-[#D9D9D9] rounded-2xl w-full py-2 px-4 text-black leading-tight focus:outline-none focus:bg-white h-14" id="inline-full-username"
                                         type="text"
                                         placeholder='@username'
-                                    // onChange={(e) => { setNameReg(e.target.value) }} 
+                                        onChange={(e) => { setUserName(e.target.value) }}
                                     />
                                 </div>
                             </div>
@@ -67,14 +94,14 @@ const Register = () => {
                                     <input className="bg-white appearance-none border-2 border-[#D9D9D9] rounded-2xl  w-full py-2 px-4 text-black leading-tight focus:outline-none focus:bg-white h-14" id="inline-password"
                                         type="password"
                                         placeholder='Password'
-                                    // onChange={(e) => { setPasswordReg(e.target.value) }} 
+                                        onChange={(e) => { setPassword(e.target.value) }}
                                     />
                                 </div>
                             </div>
                             <div className="flex flex-col py-2">
-                                <button className="shadow bg-[#0D99FF] hover:bg-[#0d86ff] focus:shadow-outline focus:outline-none text-white font-bold py-2 px-12 rounded"
+                                <button
+                                    className="shadow bg-[#0D99FF] hover:bg-[#0d86ff] focus:shadow-outline focus:outline-none text-white font-bold py-2 px-12 rounded"
                                     type="submit"
-                                // onClick={() => swalSignUp()}
                                 >
                                     Sign Up
                                 </button>

@@ -16,12 +16,10 @@ const Navbar = () => {
       },
     })
       .then((res) => {
-        console.log("bisa: ", res.data.data)
         const { photo } = res.data.data
         setPhoto(photo)
       })
       .catch((err) => {
-        console.log("gagal: ", err)
       })
   }
   useEffect(() => {

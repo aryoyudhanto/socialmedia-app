@@ -8,7 +8,7 @@ import login from 'assets/bg-login1.png'
 const Login = () => {
     const [emailOrUsername, setEmailOrUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    const [cookie, setCookie] = useCookies<string>([])
+    const [cookie, setCookie] = useCookies()
     const navigate = useNavigate()
 
     function authLogin(e: React.FormEvent<HTMLFormElement>) {

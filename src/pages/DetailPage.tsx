@@ -1,26 +1,18 @@
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useCookies } from "react-cookie";
+import axios from "axios"
 
-import { CardStatusImage, CardStatusShowDetail } from "components/Card";
+import { CardStatusImage } from "components/Card";
 import Layout from "components/Layout";
 
-import { useNavigate, useParams } from "react-router-dom";
-import useCookies from "react-cookie/cjs/useCookies";
-
-interface showType {
-  id?: number;
-  user_id?: number;
-  image?: string;
-  who_post?: string;
-  content?: string;
-  created_at?: string;
-}
+import {showType} from "utils/type/Types"
 
 const DetailPage = () => {
-  const [postData, setPostData] = useState<showType>({});
-  const { id } = useParams();
-  const [cookie, setCookie] = useCookies<string>([]);
+  const [postData, setPostData] = useState<showType[]>([]);
+  const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     fetchData();
@@ -34,41 +26,33 @@ const DetailPage = () => {
         },
       })
       .then((postData) => {
-        console.log(postData);
         const { data } = postData.data;
         setPostData(data);
       })
       .catch((error) => {
         alert(error.toString());
       })
-      .finally(() => {});
+      .finally(() => { });
   }
-
-  console.log(postData.id);
 
   return (
     <Layout>
       <div className="flex flex-col justify-center w-full h-auto items-center pt-5">
-        {/* {postData.image ? ( */}
         <div className="w-auto h-auto pt-5">
-          <CardStatusImage
-            key={postData.id}
-            name={postData.who_post}
-            image={postData.image}
-            create_at={postData.created_at?.substring(0, 10)}
-            content={postData.content}
-          />
+          {
+            postData.map((data) => {
+              return (
+                <CardStatusImage
+                  key={data.id}
+                  name={data.who_post}
+                  image_post={data.image}
+                  create_at={data.created_at?.substring(0, 10)}
+                  content={data.content}
+                />
+              )
+            })
+          }
         </div>
-        {/* ) : ( */}
-        {/* <div className="w-auto h-auto">
-          <CardStatusShow
-            key={postData.id}
-            name={postData.who_post}
-            create_at={postData.created_at?.substring(0, 10)}
-            content={postData.content}
-          />{" "}
-        </div> */}
-        {/* )} */}
       </div>
     </Layout>
   );

@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  CardProfil,
-  CardRecomendation,
-  CardStatusImage,
-  CardStatusInput,
-  CardStatusShow,
-} from "../components/Card";
-import Layout from "../components/Layout";
 
-import { PostingType } from "../utils/type/Types";
+import { CardProfil, CardRecomendation, CardStatusImage, CardStatusInput, CardStatusShow } from "components/Card";
+import Layout from "components/Layout";
+
+import { PostingType } from "utils/type/Types";
 
 const LandingPage = () => {
   const [postData, setPostData] = useState<PostingType[]>([]);

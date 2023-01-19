@@ -58,7 +58,7 @@ const Navbar = () => {
       <div className="navbar-start">
         <img src={'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Eo_circle_light-blue_white_letter-s.svg/1200px-Eo_circle_light-blue_white_letter-s.svg.png'} alt="logo-app" className="w-[42px]" />
         <Link to='/' className="btn btn-ghost normal-case text-md text-[#0D99FF]">
-          Aplikasi Sosial Media
+          Sosial Media
         </Link>
       </div>
       <div className="navbar-center">

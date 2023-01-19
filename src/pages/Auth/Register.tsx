@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
 import axios from 'axios'
 
-import register from '../../assets/bg-register1.png'
+import register from 'assets/bg-register1.png'
 
 const Register = () => {
-    const [fullName, setFullName] = useState<string>("")
-    const [email, setEmail] = useState<string>("")
+    const [fullName, setFullName] = useState<string>("")    
     const [userName, setUserName] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const [email, setEmail] = useState<string>("")
     const navigate = useNavigate()
 
     function registerHandler(e: React.FormEvent<HTMLFormElement>) {
@@ -28,10 +28,6 @@ const Register = () => {
             })
 
     }
-    console.log("nama", fullName)
-    console.log("email", email)
-    console.log("username", userName)
-    console.log("pass", password)
     return (
         <div className='flex w-full h-screen bg-white'>
             <div className='w-full h-full bg-no-repeat bg-cover' style={{ backgroundImage: `url( ${register})` }}>

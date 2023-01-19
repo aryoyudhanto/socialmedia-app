@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie'
 import React, { useState } from 'react'
 import axios from 'axios'
 
-import login from '../../assets/bg-login1.png'
+import login from 'assets/bg-login1.png'
 
 const Login = () => {
     const [emailOrUsername, setEmailOrUsername] = useState<string>("")

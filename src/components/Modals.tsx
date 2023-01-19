@@ -6,7 +6,6 @@ interface modalProps {
     tombol1: string
     tombol2: string
     onClick: () => void
-    value?: string
     coba?: string
     input1?: any
     input2?: any

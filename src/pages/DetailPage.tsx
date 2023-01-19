@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { CardStatusShow, CardStatusShowDetail } from "../components/Card";
-import Layout from "../components/Layout";
-import { PostingType } from "../utils/type/Types";
+
+import { CardStatusShow, CardStatusShowDetail } from "components/Card";
+import Layout from "components/Layout";
+
+import { PostingType } from "utils/type/Types";
 
 const DetailPage = () => {
   const [postData, setPostData] = useState<PostingType[]>([]);

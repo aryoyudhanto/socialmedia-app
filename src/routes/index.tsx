@@ -1,10 +1,10 @@
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 
-import LandingPage from '../pages'
-import Login from '../pages/Auth/Login'
-import Register from '../pages/Auth/Register'
-import ProfilePage from '../pages/ProfilePage'
-import DetailPage from '../pages/DetailPage'
+import ProfilePage from 'pages/ProfilePage'
+import Register from 'pages/Auth/Register'
+import DetailPage from 'pages/DetailPage'
+import Login from 'pages/Auth/Login'
+import LandingPage from 'pages'
 
 const router = createBrowserRouter([
     {

@@ -1,15 +1,15 @@
 import { FC, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 interface PropsInput extends InputHTMLAttributes<HTMLInputElement> {
-  id: string;
-  label: string;
-  inputSet: string;
+  id?: string;
+  label?: string;
+  inputSet?: string;
 }
 
 interface PropsTextArea extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  id: string;
-  label: string;
-  inputSet: string;
+  id?: string;
+  label?: string;
+  inputSet?: string;
 }
 
 export const Input: FC<PropsInput> = ({ label, id, inputSet, ...props }) => {

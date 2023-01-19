@@ -1,17 +1,35 @@
 import React, { useEffect, useState } from "react";
+import useCookies from "react-cookie/cjs/useCookies";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import { CardProfil, CardRecomendation, CardStatusImage, CardStatusInput, CardStatusShow } from "components/Card";
+import {
+  CardProfil,
+  CardRecomendation,
+  CardStatusImage,
+  CardStatusInput,
+  CardStatusShow,
+} from "components/Card";
 import Layout from "components/Layout";
 
-import { PostingType } from "utils/type/Types";
+import { PostingType, UserType } from "utils/type/Types";
 
 const LandingPage = () => {
   const [postData, setPostData] = useState<PostingType[]>([]);
+  const [user, setUser] = useState<UserType[]>([]);
+  const [cookie, setCookie] = useCookies<string>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
+    userData();
   }, []);
+
+  useEffect(() => {
+    if (!cookie.token) {
+      navigate("/");
+    }
+  }, [cookie.token]);
 
   function fetchData() {
     axios
@@ -19,6 +37,23 @@ const LandingPage = () => {
       .then((postData) => {
         const { data } = postData.data;
         setPostData(data);
+      })
+      .catch((error) => {
+        alert(error.toString());
+      })
+      .finally(() => {});
+  }
+
+  function userData() {
+    axios
+      .get("http://54.254.27.167/users", {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((user) => {
+        const { data } = user.data;
+        setUser(data);
       })
       .catch((error) => {
         alert(error.toString());
@@ -59,7 +94,14 @@ const LandingPage = () => {
             ))}
           </div>
           <div className="basis-1/4 p-5 h-fit sticky right-0 top-10">
-            <CardRecomendation />
+            <h3 className="py-5 pl-3 uppercase font-bold">Recomendation</h3>
+            {user.map((userData) => (
+              <CardRecomendation
+                key={userData.id}
+                name={userData.username}
+                image={userData.photo}
+              />
+            ))}
           </div>
         </div>
       </div>

@@ -4,7 +4,6 @@ import { FC } from "react";
 import { Input, TextArea } from "./Input";
 import Button from "./Button";
 
-
 interface CardProps {
   name?: string;
   image?: string;
@@ -38,51 +37,24 @@ export const CardProfil = () => {
   );
 };
 
-export const CardRecomendation = () => {
+export const CardRecomendation: FC<CardProps> = ({ name, image }) => {
   return (
-    <div className="card w-full bg-white shadow-lg flex flex-col justify-start pl-3">
-      <h3 className="py-5 pl-3">Recomendation</h3>
-
-      {/* -Account_1- */}
+    <div className="card rounded-none w-full bg-white shadow-lg flex flex-col justify-start pl-3">
       <div className="flex flex-row justify-between">
         <div className="px-3 pb-2">
           <div className="flex h-1/2">
             <img
-              src="https://i.pinimg.com/736x/f7/ba/fb/f7bafb8b735c40a4b6aa84d5cd2def18.jpg"
+              src={
+                image
+                  ? image
+                  : "https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
+              }
               className="w-[50px] h-[50px]  rounded-full"
             />
           </div>
         </div>
         <div className="pr-16 pt-2">
-          <h6 className=" text-black font-bold">Nama Account</h6>
-        </div>
-      </div>
-      {/* -Account_2- */}
-      <div className="flex flex-row justify-between">
-        <div className="px-3 pb-2">
-          <div className="flex h-1/2">
-            <img
-              src="https://i.pinimg.com/736x/f7/ba/fb/f7bafb8b735c40a4b6aa84d5cd2def18.jpg"
-              className="w-[50px] h-[50px]  rounded-full"
-            />
-          </div>
-        </div>
-        <div className="pr-16 pt-2">
-          <h6 className=" text-black font-bold">Nama Account</h6>
-        </div>
-      </div>
-      {/* -Account_23, dst- */}
-      <div className="flex flex-row justify-between">
-        <div className="px-3 pb-2">
-          <div className="flex h-1/2">
-            <img
-              src="https://i.pinimg.com/736x/f7/ba/fb/f7bafb8b735c40a4b6aa84d5cd2def18.jpg"
-              className="w-[50px] h-[50px]  rounded-full"
-            />
-          </div>
-        </div>
-        <div className="pr-16 pt-2">
-          <h6 className=" text-black font-bold">Nama Account</h6>
+          <h6 className=" text-black font-bold">{name}</h6>
         </div>
       </div>
     </div>

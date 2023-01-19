@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useCookies from "react-cookie/cjs/useCookies";
 import { useNavigate } from "react-router-dom";
-import { FiMoreHorizontal } from "react-icons/fi"
+import { FiMoreHorizontal, FiImage } from "react-icons/fi"
 import axios from "axios";
 
 import {
@@ -15,7 +15,8 @@ import Layout from "components/Layout";
 
 import { PostingType, UserType } from "utils/type/Types";
 import Button from "components/Button";
-import { Modals2 } from "components/Modals";
+import { Modals, Modals2 } from "components/Modals";
+import { TextArea } from "components/Input";
 
 interface ProfileType {
   id?: number;
@@ -26,15 +27,26 @@ interface ProfileType {
   date_of_birth?: string;
   phone_number?: string;
   about_me?: string;
+  Comments?: CommentsType[]
+
+}
+interface CommentsType {
+  comentator?: string
+  created_at?: string
+  id: number
+  id_post?: number
+  text?: string
 }
 
 const LandingPage = () => {
   const [postData, setPostData] = useState<PostingType[]>([]);
   const [user, setUser] = useState<UserType[]>([]);
   const [profileData, setProfileData] = useState<ProfileType>({});
+  const [comment, setComment] = useState<CommentsType[]>([]);
   const [cookie, setCookie] = useCookies<string>([]);
   const [content, setContent] = useState<string>("")
   const [photo, setPhoto] = useState<File>()
+  const [id, setId] = useState<number>()
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +68,8 @@ const LandingPage = () => {
         console.log(postData);
         const { data } = postData.data;
         setPostData(data);
+        setComment(data.Comments)
+
       })
       .catch((error) => {
       })
@@ -111,7 +125,6 @@ const LandingPage = () => {
         navigate(0)
       })
       .catch((error) => {
-        console.log(error)
       })
   }
 
@@ -131,8 +144,29 @@ const LandingPage = () => {
       })
   }
 
-  function editContent() {
-    axios.post(`https://www.projectfebe.online/contents`, {
+  function editContenthandler(id: number) {
+    axios.post(`https://www.projectfebe.online/contents/${id}`, {
+      content: content,
+      image: photo,
+    },
+      {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+    console.log("id", id)
+  }
+
+  function postComments(id: number) {
+    axios.post(`https://www.projectfebe.online/comments/${id}`, {
       content: content,
       image: photo,
     },
@@ -143,9 +177,10 @@ const LandingPage = () => {
       })
       .then((res) => {
         console.log(res)
+        fetchData()
+        navigate(0)
       })
       .catch((error) => {
-        console.log(error)
       })
   }
 
@@ -155,7 +190,7 @@ const LandingPage = () => {
     }
   }, [cookie.token]);
 
-  function onClickDetail(id: number){
+  function onClickDetail(id: number) {
     navigate(`/post/${id}`);
   }
   console.log("status", content)
@@ -173,6 +208,7 @@ const LandingPage = () => {
                   username={profileData.username}
                   image={profileData.photo}
                   biodata={profileData.about_me}
+                  onClick={() => navigate('/profile')}
                 />
               ) : (
                 <div className="card w-full bg-white shadow-lg flex flex-col items-center">
@@ -209,55 +245,106 @@ const LandingPage = () => {
             }
 
             <br />
-            {postData.map((postData) => (
-              <CardStatusImage
-                key={postData.id}
-                name={postData.who_post}
-                id={postData.id}
-                image_post={postData.image}
-                create_at={postData.created_at?.substring(0, 10)}
-                content={postData.content}
-                comment={
+            {
+              postData.map((postData) => {
+                return (
                   <>
-                    {/* <div className="flex h-1/2 p-1">
-                      <img
-                        src={
-                          postData.image
-                            ? postData.image
-                            : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                        }
-                        className="w-[50px] h-[50px] rounded-full"
-                      />
-                    </div>
-                    <div className="px-2">
-                      <h3 className="text-black font-normal text-sm p-3 w-full">
-                        {"sad"}
-                      </h3>
-                    </div>
-                    <div className="dropdown justify-end">
-                      <label tabIndex={0} className="btn btn-ghost btn-circle">
-                        <FiMoreHorizontal size={16} />
-                      </label>
-                      <ul
-                        tabIndex={0}
-                        className="dropdown-content menu p-2 shadow bg-white text-black rounded-box w-52"
-                      >
-                        <li>
-                          <a>Edit Comment</a>
-                        </li>
-                        <li>
-                          <a>Delete Comment</a>
-                        </li>
-                      </ul>
-                    </div> */}
+                    <CardStatusImage
+                      key={postData.id}
+                      name={postData.who_post}
+                      id={postData.id}
+                      image_post={postData.image}
+                      create_at={postData.created_at?.substring(0, 10)}
+                      content={postData.content}
+                      // comment={
+                      //   <>{
+                      //     postData.Comments ? (
+                      //       <div className="flex justify-center w-full">
+                      //         <div className="flex w-3/4">
+                      //           <div className="flex w-1/5 h-full p-1 justify-center items-center">
+                      //             <img
+                      //               src={"https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                      //               }
+                      //               className="w-[45px] h-[45px] rounded-full"
+                      //             />
+                      //           </div>
+                      //           <div className="px-2 w-full">
+                      //             <div className="py-2">
+                      //               <h3 className="text-black text-md w-full font-semibold">
+                      //                 { }
+                      //               </h3>
+                      //               <p className="text-black font-normal text-sm w-full">sad</p>
+                      //             </div>
+
+                      //           </div>
+                      //           <div className="dropdown justify-end">
+                      //             <label tabIndex={0} className="btn btn-ghost btn-circle">
+                      //               <FiMoreHorizontal size={16} />
+                      //             </label>
+                      //             <ul
+                      //               tabIndex={0}
+                      //               className="dropdown-content menu p-2 shadow bg-white text-black rounded-box w-52"
+                      //             >
+                      //               <li>
+                      //                 <a>Edit Comment</a>
+                      //               </li>
+                      //               <li>
+                      //                 <a>Delete Comment</a>
+                      //               </li>
+                      //             </ul>
+                      //           </div>
+                      //         </div>
+                      //       </div>
+
+                      //     ) : (
+                      //       null
+                      //     )
+                      //   }
+
+
+                      //   </>
+                      // }
+                      onClickDeletePost={() => deletePost(postData.id)}
+                      onClickEditPost={() => setId(postData.id)}
+                      onClickDetail={() => onClickDetail(postData.id)}
+                      noModal={1}
+                    />
+                    <Modals
+                      no={1}
+                      onClick={() => editContenthandler(id ? id : postData.id)}
+                      titleModal={"Edit Profile"}
+                      input1={
+                        <div className="card w-full h-auto bg-white flex flex-col shadow-lg">
+                          <div className="card-body">
+                            <div className="flex-row">
+                              <div className="flex h-1/2">
+                                <img
+                                  src={"https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                                  }
+                                  className="w-[50px] h-[50px] rounded-full"
+                                />
+                              </div>
+                              <TextArea
+                                id={""}
+                                label={""}
+                                placeholder="Edit your Caption"
+                                inputSet={"m-3 h-48 text-black"}
+                                onChange={(e) => setContent(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      }
+                      tombol1={"Cancel"}
+                      tombol2={"Save"}
+                    />
+
                   </>
-                }
-                onClickDeletePost={() => deletePost(postData.id)}
-              // onClickEditPost={}
-              onClickDetail={()=>onClickDetail(postData.id)}
-              />
-            ))}
+                )
+              }
+              )}
           </div>
+
           <div className="basis-1/4 p-5 h-fit sticky right-0 top-10">
             {
               cookie.token ? (

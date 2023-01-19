@@ -8,7 +8,6 @@ import { FC } from "react";
 
 import { Input, TextArea } from "./Input";
 import Button from "./Button";
-import { Modals } from "./Modals";
 
 interface CardProps {
   name?: string;
@@ -26,6 +25,7 @@ interface CardProps {
   onClickEditPost?: () => void
   onClickDeletePost?: () => void
   onClickDetail?: () => void
+  noModal?: number
 }
 
 export const CardProfil: FC<CardProps> = ({
@@ -33,6 +33,7 @@ export const CardProfil: FC<CardProps> = ({
   image,
   username,
   biodata,
+  onClick,
 }) => {
   return (
     <div className="card w-full bg-white shadow-lg flex flex-col items-center">
@@ -54,6 +55,7 @@ export const CardProfil: FC<CardProps> = ({
           <Button
             buttonSet="bg-[#0D99FF] border-none text-white"
             label="See Profil"
+            onClick={onClick}
           />
         </div>
       </div>
@@ -240,6 +242,7 @@ export const CardStatusImage: FC<CardProps> = ({
   onClickEditPost,
   onClickDeletePost,
   onClickDetail,
+  noModal
 }) => {
   return (
     <div className="card w-full bg-white pb-5 shadow-md my-5">
@@ -282,7 +285,7 @@ export const CardStatusImage: FC<CardProps> = ({
           </button>
         </div>
         <div className="pr-10 py-5">
-          <div className="dropdown">
+          <div className="dropdown" onClick={onClickEditPost}>
             <label tabIndex={0} className="btn btn-ghost btn-circle">
               <FiMoreHorizontal size={20} color="black" />
             </label>
@@ -291,7 +294,7 @@ export const CardStatusImage: FC<CardProps> = ({
               className="dropdown-content menu p-2 shadow bg-white text-black rounded-box w-52"
             >
               <li>
-                <label htmlFor={`my-modal-1`} className={`normal-case bg-transparent flex w-full`}
+                <label htmlFor={`my-modal-${noModal}`} className={`normal-case bg-transparent flex w-full`}
                 // onClick={() => setIdtask(item.id)}
                 >
                   <div className="flex flex-col cursor-pointer">
@@ -310,13 +313,6 @@ export const CardStatusImage: FC<CardProps> = ({
             </ul>
           </div>
         </div>
-        <Modals
-          no={1}
-          onClick={() => console.log()}
-          titleModal={"Edit Profile"}
-          tombol1={"Cancel"}
-          tombol2={"Save"}
-        />
       </div>
       <div className="card w-120 bg-slate-100 mx-10 pt-5 pb-2 px-5">
         <div className="flex justify-around">

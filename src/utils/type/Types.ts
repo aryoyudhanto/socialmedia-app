@@ -5,3 +5,9 @@ export interface PostingType {
   image?: string;
   created_at?: string;
 }
+
+export interface UserType {
+  id?: number;
+  username?: string;
+  photo?: string;
+}

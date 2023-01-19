@@ -1,51 +1,24 @@
-import React, { useEffect, useState } from "react";
-import useCookies from "react-cookie/cjs/useCookies";
 import { useNavigate } from "react-router-dom";
-import { FiMoreHorizontal, FiImage } from "react-icons/fi"
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 
-import {
-  CardProfil,
-  CardRecomendation,
-  CardStatusImage,
-  CardStatusInput,
-  CardStatusShow,
-} from "components/Card";
-import Layout from "components/Layout";
-
-import { PostingType, UserType } from "utils/type/Types";
-import Button from "components/Button";
-import { Modals, Modals2 } from "components/Modals";
+import { CardProfil, CardRecomendation, CardStatusImage, CardStatusInput } from "components/Card";
 import { TextArea } from "components/Input";
+import { Modals } from "components/Modals";
+import Layout from "components/Layout";
+import Button from "components/Button";
 
-interface ProfileType {
-  id?: number;
-  name?: string;
-  email?: string;
-  username?: string;
-  photo?: string;
-  date_of_birth?: string;
-  phone_number?: string;
-  about_me?: string;
-  Comments?: CommentsType[]
-
-}
-interface CommentsType {
-  comentator?: string
-  created_at?: string
-  id: number
-  id_post?: number
-  text?: string
-}
+import { PostingType, UserType, ProfileType, CommentsType } from "utils/type/Types";
 
 const LandingPage = () => {
-  const [postData, setPostData] = useState<PostingType[]>([]);
-  const [user, setUser] = useState<UserType[]>([]);
   const [profileData, setProfileData] = useState<ProfileType>({});
+  const [postData, setPostData] = useState<PostingType[]>([]);
   const [comment, setComment] = useState<CommentsType[]>([]);
-  const [cookie, setCookie] = useCookies<string>([]);
   const [content, setContent] = useState<string>("")
-  const [photo, setPhoto] = useState<File>()
+  const [user, setUser] = useState<UserType[]>([]);
+  const [photo, setPhoto] = useState<File>();
+  const [cookie, setCookie] = useCookies();
   const [id, setId] = useState<number>()
   const navigate = useNavigate();
 
@@ -65,7 +38,6 @@ const LandingPage = () => {
     axios
       .get("https://www.projectfebe.online/contents")
       .then((postData) => {
-        console.log(postData);
         const { data } = postData.data;
         setPostData(data);
         setComment(data.Comments)
@@ -100,7 +72,6 @@ const LandingPage = () => {
         },
       })
       .then((profil) => {
-        //console.log(profil);
         const { data } = profil.data;
         setProfileData(data);
       })
@@ -120,7 +91,6 @@ const LandingPage = () => {
         },
       })
       .then((res) => {
-        console.log(res)
         fetchData()
         navigate(0)
       })
@@ -136,11 +106,9 @@ const LandingPage = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         fetchData()
       })
       .catch((error) => {
-        console.log(error);
       })
   }
 
@@ -156,13 +124,9 @@ const LandingPage = () => {
         },
       })
       .then((res) => {
-        console.log(res)
       })
       .catch((error) => {
-        console.log(error)
       })
-
-    console.log("id", id)
   }
 
   function postComments(id: number) {
@@ -176,7 +140,6 @@ const LandingPage = () => {
         },
       })
       .then((res) => {
-        console.log(res)
         fetchData()
         navigate(0)
       })
@@ -193,7 +156,6 @@ const LandingPage = () => {
   function onClickDetail(id: number) {
     navigate(`/post/${id}`);
   }
-  console.log("status", content)
 
   return (
     <Layout>
@@ -230,7 +192,6 @@ const LandingPage = () => {
                 </div>
               )
             }
-
           </div>
           <div className="basis-1/2 flex-col justify-center py-5">
             {

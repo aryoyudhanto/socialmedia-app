@@ -1,26 +1,16 @@
 import useCookies from 'react-cookie/cjs/useCookies'
-import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import Layout from 'components/Layout'
 import { Modals } from 'components/Modals'
+import Layout from 'components/Layout'
 
-interface ProfileType {
-    id?: number,
-    name?: string,
-    email?: string,
-    username?: string,
-    photo?: any,
-    date_of_birth?: string,
-    phone_number?: string,
-    about_me?: string,
-    password?: string,
-}
+import { ProfileTypes } from 'utils/type/Types'
 
 const ProfilePage = () => {
     const [cookie, setCookie, removeCookie] = useCookies<string>([])
-    const [profileData, setProfileData] = useState<ProfileType>({})
+    const [profileData, setProfileData] = useState<ProfileTypes>({})
     const [dateOfBirth, setDateOfBirth] = useState<string>("")
     const [phoneNumber, setPhoneNumber] = useState<string>("")
     const [fullName, setFullName] = useState<string>("")
@@ -38,7 +28,6 @@ const ProfilePage = () => {
             },
         })
             .then((res) => {
-                console.log(res.data.data)
                 const { name, email, username, photo, date_of_birth, phone_number, about_me } = res.data.data
                 setProfileData(res.data.data)
                 setFullName(name)
@@ -261,7 +250,6 @@ const ProfilePage = () => {
                             <div className="flex py-2 w-full">
                                 <label className="font-semibold text-[#0D99FF] flex items-center justify-center w-1/3 text-center">Full Name</label>
                                 <input
-                                    // value={email}
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="text"
                                     placeholder="Full Name"
@@ -275,7 +263,6 @@ const ProfilePage = () => {
                             <div className="flex py-2 w-full">
                                 <label className="font-semibold text-[#0D99FF] flex items-center justify-center w-1/3 text-center">Email</label>
                                 <input
-                                    // value={email}
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="email"
                                     placeholder="Email"
@@ -289,7 +276,6 @@ const ProfilePage = () => {
                             <div className="flex py-2 w-full">
                                 <label className="font-semibold text-[#0D99FF] flex items-center justify-center w-1/3 text-center">Username</label>
                                 <input
-                                    // value={email}
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="text"
                                     placeholder="Username"
@@ -303,7 +289,6 @@ const ProfilePage = () => {
                             <div className="flex py-2 w-full">
                                 <label className="font-semibold text-[#0D99FF] flex items-center justify-center w-1/3 text-center">Date Of Birth</label>
                                 <input
-                                    // value={email}
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="text"
                                     placeholder="Date Of Birth"
@@ -317,7 +302,6 @@ const ProfilePage = () => {
                             <div className="flex py-2 w-full">
                                 <label className="font-semibold text-[#0D99FF] flex items-center justify-center w-1/3 text-center">Phone Number</label>
                                 <input
-                                    // value={email}
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="text"
                                     placeholder="0812xxxxxxxx"
@@ -358,7 +342,6 @@ const ProfilePage = () => {
                         onClick={() => editProfile()}
                     />
                     <label className={`normal-case text-pink-airbnb bg-transparent mt-3`}
-                    // onClick={() => setIdtask(item.id)}
                     >
                         <div className="flex flex-col cursor-pointer">
                             <div

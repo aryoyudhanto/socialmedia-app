@@ -1,7 +1,9 @@
-import Button from "./Button";
-import { Input, TextArea } from "./Input";
 import { FiImage, FiMoreHorizontal, FiMessageCircle } from "react-icons/fi";
 import { FC } from "react";
+
+import { Input, TextArea } from "./Input";
+import Button from "./Button";
+
 
 interface CardProps {
   name?: string;

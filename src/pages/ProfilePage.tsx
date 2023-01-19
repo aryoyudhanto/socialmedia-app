@@ -18,13 +18,13 @@ interface ProfileType {
 }
 
 const ProfilePage = () => {
+    const [cookie, setCookie, removeCookie] = useCookies<string>([])
     const [profileData, setProfileData] = useState<ProfileType>({})
     const [dateOfBirth, setDateOfBirth] = useState<string>("")
     const [phoneNumber, setPhoneNumber] = useState<string>("")
     const [fullName, setFullName] = useState<string>("")
     const [userName, setUserName] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
-    const [cookie, setCookie, removeCookie] = useCookies<string>([])
+    const [password, setPassword] = useState<string>("")    
     const [email, setEmail] = useState<string>("")
     const [photo, setPhoto] = useState<any>()
     const [bio, setBio] = useState<string>("")
@@ -37,7 +37,6 @@ const ProfilePage = () => {
             },
         })
             .then((res) => {
-                console.log("bisa: ", res.data.data)
                 const { name, email, username, photo, date_of_birth, phone_number, about_me } = res.data.data
                 setProfileData(res.data.data)
                 setFullName(name)
@@ -49,7 +48,6 @@ const ProfilePage = () => {
                 setBio(about_me)
             })
             .catch((err) => {
-                console.log("gagal: ", err)
             })
     }
 
@@ -73,11 +71,9 @@ const ProfilePage = () => {
             },
         })
             .then((res) => {
-                console.log(res)
                 alert("berhasil")
                 myProfileHandler()
             }).catch((err) => {
-                console.log(err)
                 alert("gagal")
             })
     }
@@ -88,12 +84,10 @@ const ProfilePage = () => {
                 Authorization: `Bearer ${cookie.token}`,
             },
         }).then((res) => {
-            console.log(res)
             alert("berhasil")
             removeCookie("token")
             navigate(0)
         }).catch((err) => {
-            console.log(err)
             alert("gagal")
         })
     }

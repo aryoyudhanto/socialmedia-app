@@ -4,17 +4,18 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import Layout from 'components/Layout'
-import Modals from 'components/Modals'
+import { Modals } from 'components/Modals'
 
 interface ProfileType {
     id?: number,
     name?: string,
     email?: string,
     username?: string,
-    photo?: string,
+    photo?: any,
     date_of_birth?: string,
     phone_number?: string,
     about_me?: string,
+    password?: string,
 }
 
 const ProfilePage = () => {
@@ -24,9 +25,9 @@ const ProfilePage = () => {
     const [phoneNumber, setPhoneNumber] = useState<string>("")
     const [fullName, setFullName] = useState<string>("")
     const [userName, setUserName] = useState<string>("")
-    const [password, setPassword] = useState<string>("")    
+    const [password, setPassword] = useState<string>("")
     const [email, setEmail] = useState<string>("")
-    const [photo, setPhoto] = useState<any>()
+    const [photo, setPhoto] = useState<string>("")
     const [bio, setBio] = useState<string>("")
     const navigate = useNavigate()
 
@@ -37,6 +38,7 @@ const ProfilePage = () => {
             },
         })
             .then((res) => {
+                console.log(res.data.data)
                 const { name, email, username, photo, date_of_birth, phone_number, about_me } = res.data.data
                 setProfileData(res.data.data)
                 setFullName(name)
@@ -55,19 +57,46 @@ const ProfilePage = () => {
         myProfileHandler();
     }, []);
 
+    // function editProfile() {
+    //     const formData = new FormData();
+    //     let key: keyof typeof profileData;
+    //     for (key in profileData) {
+    //         formData.append(key, profileData[key]);
+    //     }
+    //     axios.put(`https://www.projectfebe.online/users`, {
+    //         name: fullName,
+    //         email: email,
+    //         username: userName,
+    //         photo: photo,
+    //         date_of_birth: dateOfBirth,
+    //         phone_number: phoneNumber,
+    //         about_me: bio,
+    //         password: password,
+    //     }, {
+    //         headers: {
+    //             Authorization: `Bearer ${cookie.token}`,
+    //             "Content-Type": "multipart/form-data",
+    //         },
+    //     })
+    //         .then((res) => {
+    //             alert("berhasil")
+    //             myProfileHandler()
+    //         }).catch((err) => {
+    //             alert("gagal")
+    //         })
+    // }
     function editProfile() {
-        axios.put(`http://54.254.27.167/users`, {
-            name: fullName,
-            username: userName,
-            email: email,
-            date_of_birth: dateOfBirth,
-            phone_number: phoneNumber,
-            about_me: bio,
-            password: password,
-            image: photo,
+        const formData = new FormData();
+        let key: keyof typeof profileData;
+        for (key in profileData) {
+            formData.append(key, profileData[key]);
+        }
+        axios.put(`https://www.projectfebe.online/users`, {
+            formData
         }, {
             headers: {
                 Authorization: `Bearer ${cookie.token}`,
+                "Content-Type": "multipart/form-data",
             },
         })
             .then((res) => {
@@ -97,6 +126,12 @@ const ProfilePage = () => {
             navigate("/");
         }
     }, [cookie.token]);
+
+    const handleChange = (value: string | File, key: keyof typeof profileData) => {
+        let temp = { ...profileData };
+        temp[key] = value;
+        setProfileData(temp);
+    };
 
     return (
         <Layout>
@@ -209,7 +244,16 @@ const ProfilePage = () => {
                                     text-[#0D99FF] rounded-lg border-2 border-[#e5e5e5] bg-white focus:outline-none w-full"
                                     type="file"
                                     placeholder="Profile Picture"
-                                // onChange={(e) => setPhoto(e.target.files[0])}
+                                    onChange={
+                                        (e) => {
+                                            if (!e.currentTarget.files) {
+                                                return;
+                                            }
+                                            setPhoto(URL.createObjectURL(e.currentTarget.files[0]))
+                                            handleChange(e.currentTarget.files[0], "photo")
+                                        }
+                                        // (e) => setPhoto(e.target.files[0])
+                                    }
                                 />
                             </div>
                         }
@@ -221,8 +265,9 @@ const ProfilePage = () => {
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="text"
                                     placeholder="Full Name"
-                                    value={fullName}
-                                    onChange={(e) => setFullName(e.target.value)}
+                                    // value={fullName}
+                                    // onChange={(e) => setFullName(e.target.value)}
+                                    onChange={(e) => handleChange(e.target.value, 'name')}
                                 />
                             </div>
                         }
@@ -234,8 +279,9 @@ const ProfilePage = () => {
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="email"
                                     placeholder="Email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    // value={email}
+                                    // onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) => handleChange(e.target.value, 'name')}
                                 />
                             </div>
                         }
@@ -247,8 +293,9 @@ const ProfilePage = () => {
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="text"
                                     placeholder="Username"
-                                    value={userName}
-                                    onChange={(e) => setUserName(e.target.value)}
+                                    // value={userName}
+                                    // onChange={(e) => setUserName(e.target.value)}
+                                    onChange={(e) => handleChange(e.target.value, 'username')}
                                 />
                             </div>
                         }
@@ -260,8 +307,9 @@ const ProfilePage = () => {
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="text"
                                     placeholder="Date Of Birth"
-                                    value={dateOfBirth}
-                                    onChange={(e) => setDateOfBirth(e.target.value)}
+                                    // value={dateOfBirth}
+                                    // onChange={(e) => setDateOfBirth(e.target.value)}
+                                    onChange={(e) => handleChange(e.target.value, 'date_of_birth')}
                                 />
                             </div>
                         }
@@ -273,8 +321,9 @@ const ProfilePage = () => {
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="text"
                                     placeholder="0812xxxxxxxx"
-                                    value={phoneNumber}
-                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    // value={phoneNumber}
+                                    // onChange={(e) => setPhoneNumber(e.target.value)}
+                                    onChange={(e) => handleChange(e.target.value, 'phone_number')}
                                 />
                             </div>
                         }
@@ -286,8 +335,9 @@ const ProfilePage = () => {
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="text"
                                     placeholder="About Me"
-                                    value={bio}
-                                    onChange={(e) => setBio(e.target.value)}
+                                    // value={bio}
+                                    // onChange={(e) => setBio(e.target.value)}
+                                    onChange={(e) => handleChange(e.target.value, 'about_me')}
                                 />
                             </div>
                         }
@@ -298,7 +348,8 @@ const ProfilePage = () => {
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="password"
                                     placeholder="Password"
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    // onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => handleChange(e.target.value, 'password')}
                                 />
                             </div>
                         }
@@ -325,11 +376,3 @@ const ProfilePage = () => {
 }
 
 export default ProfilePage
-    // id ?: number,
-    // name ?: string,
-    // email ?: string,
-    // username ?: string,
-    // photo ?: string,
-    // date_of_birth ?: string,
-    // phone_number ?: string,
-    // about_me ?: string,

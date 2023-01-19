@@ -1,6 +1,6 @@
 export interface PostingType {
   id?: number;
-  name?: string;
+  who_post?: string;
   content?: string;
   image?: string;
   created_at?: string;

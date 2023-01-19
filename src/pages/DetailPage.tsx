@@ -33,7 +33,7 @@ const DetailPage = () => {
           {postData.map((postData) => (
             <CardStatusShow
               key={postData.id}
-              name={postData.name}
+              name={postData.who_post}
               id={postData.id}
               create_at={postData.created_at?.substring(0, 10)}
               content={postData.content}
@@ -44,7 +44,7 @@ const DetailPage = () => {
           {postData.map((postData) => (
             <CardStatusShowDetail
               key={postData.id}
-              name={postData.name}
+              name={postData.who_post}
               id={postData.id}
               image={postData.image}
               create_at={postData.created_at?.substring(0, 10)}

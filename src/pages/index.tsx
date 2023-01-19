@@ -13,6 +13,7 @@ import {
 import Layout from "components/Layout";
 
 import { PostingType, UserType } from "utils/type/Types";
+import Button from "components/Button";
 
 interface ProfileType {
   id?: number;
@@ -53,9 +54,8 @@ const LandingPage = () => {
         setPostData(data);
       })
       .catch((error) => {
-        alert(error.toString());
       })
-      .finally(() => {});
+      .finally(() => { });
   }
 
   function userData() {
@@ -70,9 +70,8 @@ const LandingPage = () => {
         setUser(data);
       })
       .catch((error) => {
-        alert(error.toString());
       })
-      .finally(() => {});
+      .finally(() => { });
   }
 
   function profile() {
@@ -88,9 +87,8 @@ const LandingPage = () => {
         setProfileData(data);
       })
       .catch((error) => {
-        alert(error.toString());
       })
-      .finally(() => {});
+      .finally(() => { });
   }
 
   return (
@@ -98,16 +96,45 @@ const LandingPage = () => {
       <div className="container mx-auto">
         <div className="flex flex-row justify-center h-full w-full">
           <div className="basis-1/4 p-5 sticky left-0 top-10 h-fit">
-            <CardProfil
-              key={profileData.id}
-              name={profileData.name}
-              username={profileData.username}
-              image={profileData.photo}
-              biodata={profileData.about_me}
-            />
+            {
+              cookie.token ? (
+                <CardProfil
+                  key={profileData.id}
+                  name={profileData.name}
+                  username={profileData.username}
+                  image={profileData.photo}
+                  biodata={profileData.about_me}
+                />
+              ) : (
+                <div className="card w-full bg-white shadow-lg flex flex-col items-center">
+                  <div className="flex justify-center w-full h-1/2 my-5">
+                    <h1 className="text-3xl font-bold text-black">Get New Account!</h1>
+                  </div>
+                  <div className="card-body items-center text-center pt-3">
+                    <h2 className="card-title text-base-100 text-sm font-normal">Register to get your own pesonalized timeline!</h2>
+                    <h3 className="text-black font-medium"></h3>
+                    <p className="text-black font-thin text-sm"></p>
+                    <div className="card-actions pt-3 w-full">
+                      <Button
+                        label="Register"
+                        buttonSet="bg-[#0D99FF] hover:bg-[#0d86ff] border-none text-white"
+                        onClick={() => navigate('/register')}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )
+            }
+
           </div>
           <div className="basis-1/2 flex-col justify-center py-5">
-            <CardStatusInput />
+            {
+              cookie.token? (
+                <CardStatusInput />
+              ):(
+                null
+              )
+            }            
 
             <br />
             {postData.map((postData) => (
@@ -122,14 +149,40 @@ const LandingPage = () => {
             ))}
           </div>
           <div className="basis-1/4 p-5 h-fit sticky right-0 top-10">
-            <h3 className="py-5 pl-3 uppercase font-bold">Recomendation</h3>
-            {user.slice(0, 5).map((userData) => (
-              <CardRecomendation
-                key={userData.id}
-                name={userData.username}
-                image={userData.photo}
-              />
-            ))}
+            {
+              cookie.token ? (
+                <>
+                  <h3 className="py-5 pl-3 uppercase font-bold">Recomendation</h3>
+                  {user.slice(0, 5).map((userData) => (
+                    <CardRecomendation
+                      key={userData.id}
+                      name={userData.username}
+                      image={userData.photo}
+                    />
+                  ))}
+                </>
+              ) : (
+                <div className="card w-full bg-white shadow-lg flex flex-col items-center">
+                  <div className="flex justify-center w-full h-1/2 my-5">
+                    <h1 className="text-3xl font-bold text-black">New Feature!</h1>
+                  </div>
+                  <div className="card-body items-center text-center pt-3">
+                    <h2 className="card-title text-base-100 text-sm font-normal">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Autem quos amet, ipsa nesciunt corporis iste modi inventore nam iusto quisquam.!</h2>
+                    <h3 className="text-black font-medium"></h3>
+                    <p className="text-black font-thin text-sm"></p>
+                    <div className="card-actions pt-3 w-full">
+                      <Button
+                        label="Login"
+                        buttonSet="bg-[#0D99FF] hover:bg-[#0d86ff] border-none text-white"
+                        onClick={() => navigate('/login')}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )
+            }
+
+            { }
           </div>
         </div>
       </div>

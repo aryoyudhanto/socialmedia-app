@@ -4,33 +4,47 @@ import { FC } from "react";
 import { Input, TextArea } from "./Input";
 import Button from "./Button";
 
-
 interface CardProps {
   name?: string;
+  username?: string;
   image?: string;
   id?: number;
   labelButton?: string;
   create_at?: string;
   content?: string;
+  biodata?: string;
+  onClickProfil?: () => void;
 }
 
-export const CardProfil = () => {
+export const CardProfil: FC<CardProps> = ({
+  image,
+  name,
+  username,
+  biodata,
+  labelButton,
+  onClickProfil,
+}) => {
   return (
     <div className="card w-full bg-white shadow-lg flex flex-col items-center">
       <div className="flex h-1/2">
         <img
-          src="https://i.pinimg.com/564x/d2/2c/46/d22c46d3557f5c699187826a8c224751.jpg"
+          src={
+            image
+              ? image
+              : "https://i.pinimg.com/564x/d2/2c/46/d22c46d3557f5c699187826a8c224751.jpg"
+          }
           className="w-[150px] h-[150px] mx-auto mt-16 rounded-full"
         />
       </div>
       <div className="card-body items-center text-center pt-3">
-        <h2 className="card-title text-black font-bold">Nama Account</h2>
-        <h3 className="text-black font-medium">@username</h3>
-        <p className="text-black font-thin text-sm">Biodata singkat user</p>
+        <h2 className="card-title text-black font-bold">{name}</h2>
+        <h3 className="text-black font-medium">@{username}</h3>
+        <p className="text-black font-thin text-sm">{biodata}</p>
         <div className="card-actions pt-3">
           <Button
             buttonSet="bg-[#0D99FF] border-none text-white"
-            label="See Profil"
+            label={labelButton}
+            onClick={onClickProfil}
           />
         </div>
       </div>
@@ -38,51 +52,24 @@ export const CardProfil = () => {
   );
 };
 
-export const CardRecomendation = () => {
+export const CardRecomendation: FC<CardProps> = ({ name, image }) => {
   return (
-    <div className="card w-full bg-white shadow-lg flex flex-col justify-start pl-3">
-      <h3 className="py-5 pl-3">Recomendation</h3>
-
-      {/* -Account_1- */}
+    <div className="card rounded-none w-full bg-white shadow-lg flex flex-col justify-start pl-3">
       <div className="flex flex-row justify-between">
         <div className="px-3 pb-2">
           <div className="flex h-1/2">
             <img
-              src="https://i.pinimg.com/736x/f7/ba/fb/f7bafb8b735c40a4b6aa84d5cd2def18.jpg"
+              src={
+                image
+                  ? image
+                  : "https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
+              }
               className="w-[50px] h-[50px]  rounded-full"
             />
           </div>
         </div>
         <div className="pr-16 pt-2">
-          <h6 className=" text-black font-bold">Nama Account</h6>
-        </div>
-      </div>
-      {/* -Account_2- */}
-      <div className="flex flex-row justify-between">
-        <div className="px-3 pb-2">
-          <div className="flex h-1/2">
-            <img
-              src="https://i.pinimg.com/736x/f7/ba/fb/f7bafb8b735c40a4b6aa84d5cd2def18.jpg"
-              className="w-[50px] h-[50px]  rounded-full"
-            />
-          </div>
-        </div>
-        <div className="pr-16 pt-2">
-          <h6 className=" text-black font-bold">Nama Account</h6>
-        </div>
-      </div>
-      {/* -Account_23, dst- */}
-      <div className="flex flex-row justify-between">
-        <div className="px-3 pb-2">
-          <div className="flex h-1/2">
-            <img
-              src="https://i.pinimg.com/736x/f7/ba/fb/f7bafb8b735c40a4b6aa84d5cd2def18.jpg"
-              className="w-[50px] h-[50px]  rounded-full"
-            />
-          </div>
-        </div>
-        <div className="pr-16 pt-2">
-          <h6 className=" text-black font-bold">Nama Account</h6>
+          <h6 className=" text-black font-bold">{name}</h6>
         </div>
       </div>
     </div>

@@ -14,15 +14,28 @@ import Layout from "components/Layout";
 
 import { PostingType, UserType } from "utils/type/Types";
 
+interface ProfileType {
+  id?: number;
+  name?: string;
+  email?: string;
+  username?: string;
+  photo?: string;
+  date_of_birth?: string;
+  phone_number?: string;
+  about_me?: string;
+}
+
 const LandingPage = () => {
   const [postData, setPostData] = useState<PostingType[]>([]);
   const [user, setUser] = useState<UserType[]>([]);
+  const [profileData, setProfileData] = useState<ProfileType>({});
   const [cookie, setCookie] = useCookies<string>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
     userData();
+    profile();
   }, []);
 
   useEffect(() => {
@@ -33,8 +46,9 @@ const LandingPage = () => {
 
   function fetchData() {
     axios
-      .get("http://54.254.27.167/contents")
+      .get("https://www.projectfebe.online/contents")
       .then((postData) => {
+        //console.log(postData);
         const { data } = postData.data;
         setPostData(data);
       })
@@ -46,7 +60,7 @@ const LandingPage = () => {
 
   function userData() {
     axios
-      .get("http://54.254.27.167/users", {
+      .get("https://www.projectfebe.online/users", {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
         },
@@ -61,31 +75,45 @@ const LandingPage = () => {
       .finally(() => {});
   }
 
+  function profile() {
+    axios
+      .get("https://www.projectfebe.online/myprofile", {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((profil) => {
+        //console.log(profil);
+        const { data } = profil.data;
+        setProfileData(data);
+      })
+      .catch((error) => {
+        alert(error.toString());
+      })
+      .finally(() => {});
+  }
+
   return (
     <Layout>
       <div className="container mx-auto">
         <div className="flex flex-row justify-center h-full w-full">
           <div className="basis-1/4 p-5 sticky left-0 top-10 h-fit">
-            <CardProfil />
+            <CardProfil
+              key={profileData.id}
+              name={profileData.name}
+              username={profileData.username}
+              image={profileData.photo}
+              biodata={profileData.about_me}
+            />
           </div>
           <div className="basis-1/2 flex-col justify-center py-5">
             <CardStatusInput />
-            <br />: :
-            {postData.map((postData) => (
-              <CardStatusShow
-                key={postData.id}
-                name={postData.name}
-                id={postData.id}
-                create_at={postData.created_at?.substring(0, 10)}
-                content={postData.content}
-              />
-            ))}
-            ;
+
             <br />
             {postData.map((postData) => (
               <CardStatusImage
                 key={postData.id}
-                name={postData.name}
+                name={postData.who_post}
                 id={postData.id}
                 image={postData.image}
                 create_at={postData.created_at?.substring(0, 10)}
@@ -95,7 +123,7 @@ const LandingPage = () => {
           </div>
           <div className="basis-1/4 p-5 h-fit sticky right-0 top-10">
             <h3 className="py-5 pl-3 uppercase font-bold">Recomendation</h3>
-            {user.map((userData) => (
+            {user.slice(0, 5).map((userData) => (
               <CardRecomendation
                 key={userData.id}
                 name={userData.username}

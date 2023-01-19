@@ -1,15 +1,26 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { CardStatusShow, CardStatusShowDetail } from "components/Card";
+import { CardStatusImage, CardStatusShowDetail } from "components/Card";
 import Layout from "components/Layout";
 
-import { PostingType } from "utils/type/Types";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import useCookies from "react-cookie/cjs/useCookies";
+
+interface showType {
+  id?: number;
+  user_id?: number;
+  image?: string;
+  who_post?: string;
+  content?: string;
+  created_at?: string;
+}
 
 const DetailPage = () => {
-  const [postData, setPostData] = useState<PostingType[]>([]);
-  const {id} = useParams()
+  const [postData, setPostData] = useState<showType>({});
+  const { id } = useParams();
+  const [cookie, setCookie] = useCookies<string>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -17,11 +28,15 @@ const DetailPage = () => {
 
   function fetchData() {
     axios
-      .get(`http://54.254.27.167/contents/${id}`)
-      .then((res) => {
-        console.log(res)
-        // const { data } = postData.data;
-        // setPostData(data);
+      .get(`https://www.projectfebe.online/contents/${id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((postData) => {
+        console.log(postData);
+        const { data } = postData.data;
+        setPostData(data);
       })
       .catch((error) => {
         alert(error.toString());
@@ -29,32 +44,31 @@ const DetailPage = () => {
       .finally(() => {});
   }
 
+  console.log(postData.id);
+
   return (
     <Layout>
       <div className="flex flex-col justify-center w-full h-auto items-center pt-5">
-        {/* <div className="w-auto h-auto">
-          {postData.map((postData) => (
-            <CardStatusShow
-              key={postData.id}
-              name={postData.who_post}
-              id={postData.id}
-              create_at={postData.created_at?.substring(0, 10)}
-              content={postData.content}
-            />
-          ))}
-        </div> */}
+        {/* {postData.image ? ( */}
         <div className="w-auto h-auto pt-5">
-          {postData.map((postData) => (
-            <CardStatusShowDetail
-              key={postData.id}
-              name={postData.who_post}
-              id={postData.id}
-              image={postData.image}
-              create_at={postData.created_at?.substring(0, 10)}
-              content={postData.content}
-            />
-          ))}
+          <CardStatusImage
+            key={postData.id}
+            name={postData.who_post}
+            image={postData.image}
+            create_at={postData.created_at?.substring(0, 10)}
+            content={postData.content}
+          />
         </div>
+        {/* ) : ( */}
+        {/* <div className="w-auto h-auto">
+          <CardStatusShow
+            key={postData.id}
+            name={postData.who_post}
+            create_at={postData.created_at?.substring(0, 10)}
+            content={postData.content}
+          />{" "}
+        </div> */}
+        {/* )} */}
       </div>
     </Layout>
   );

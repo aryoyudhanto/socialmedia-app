@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import useCookies from 'react-cookie/cjs/useCookies'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-import Layout from '../components/Layout'
-
-import Modals from '../components/Modals'
+import Layout from 'components/Layout'
+import Modals from 'components/Modals'
 
 interface ProfileType {
     id?: number,
@@ -20,15 +19,15 @@ interface ProfileType {
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState<ProfileType>({})
-    const [fullName, setFullName] = useState<string>("")
-    const [email, setEmail] = useState<string>("")
-    const [userName, setUserName] = useState<string>("")
-    const [photo, setPhoto] = useState<string>("")
     const [dateOfBirth, setDateOfBirth] = useState<string>("")
     const [phoneNumber, setPhoneNumber] = useState<string>("")
+    const [fullName, setFullName] = useState<string>("")
+    const [userName, setUserName] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const [cookie, setCookie, removeCookie] = useCookies<string>([])
+    const [email, setEmail] = useState<string>("")
+    const [photo, setPhoto] = useState<any>()
     const [bio, setBio] = useState<string>("")
-    const [cookie, setCookie] = useCookies<string>([])
     const navigate = useNavigate()
 
     async function myProfileHandler() {
@@ -83,19 +82,28 @@ const ProfilePage = () => {
             })
     }
 
+    function deleteProfile() {
+        axios.delete(`http://54.254.27.167/users`, {
+            headers: {
+                Authorization: `Bearer ${cookie.token}`,
+            },
+        }).then((res) => {
+            console.log(res)
+            alert("berhasil")
+            removeCookie("token")
+            navigate(0)
+        }).catch((err) => {
+            console.log(err)
+            alert("gagal")
+        })
+    }
+
     useEffect(() => {
         if (!cookie.token) {
             navigate("/");
         }
     }, [cookie.token]);
 
-    console.log("nama", fullName)
-    console.log("email", email)
-    console.log("username", userName)
-    console.log("date", dateOfBirth)
-    console.log("phone", phoneNumber)
-    console.log("about", bio)
-    console.log("poto", photo)
     return (
         <Layout>
             <div className='flex'>
@@ -135,7 +143,6 @@ const ProfilePage = () => {
                             <div className="flex flex-col py-2">
                                 <label className="font-semibold text-[#0D99FF]">Full Name</label>
                                 <input
-                                    // value={email}
                                     className="rounded-lg bg-white mt-2 p-2 border-2 focus:outline-none text-black w-3/4"
                                     type="text"
                                     placeholder="update profile first"
@@ -146,7 +153,6 @@ const ProfilePage = () => {
                             <div className="flex flex-col py-2">
                                 <label className="font-semibold text-[#0D99FF]">Email</label>
                                 <input
-                                    // value={email}
                                     className="rounded-lg bg-white mt-2 p-2 border-2 focus:outline-none text-black w-3/4"
                                     type="email"
                                     placeholder="update profile first"
@@ -157,7 +163,6 @@ const ProfilePage = () => {
                             <div className="flex flex-col py-2">
                                 <label className="font-semibold text-[#0D99FF]">Username</label>
                                 <input
-                                    // value={email}
                                     className="rounded-lg bg-white mt-2 p-2 border-2 focus:outline-none text-black w-3/4"
                                     type="text"
                                     placeholder="update profile first"
@@ -206,12 +211,11 @@ const ProfilePage = () => {
                             <div className="flex py-2 w-full">
                                 <label className="font-semibold text-[#0D99FF] flex items-center justify-center w-1/3">Picture</label>
                                 <input
-                                    // value={email}
                                     className="file-input file:bg-[#0D99FF] file:rounded-lg file:border-none file:text-white 
                                     text-[#0D99FF] rounded-lg border-2 border-[#e5e5e5] bg-white focus:outline-none w-full"
                                     type="file"
                                     placeholder="Profile Picture"
-                                    // onChange={(e) => setPhoto(e.target.files[0])}
+                                // onChange={(e) => setPhoto(e.target.files[0])}
                                 />
                             </div>
                         }
@@ -308,9 +312,20 @@ const ProfilePage = () => {
                         tombol2={"Save"}
                         onClick={() => editProfile()}
                     />
+                    <label className={`normal-case text-pink-airbnb bg-transparent mt-3`}
+                    // onClick={() => setIdtask(item.id)}
+                    >
+                        <div className="flex flex-col cursor-pointer">
+                            <div
+                                className="w-1/3 text-lg mx-10 capitalize bg-[#0D99FF] border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-[#0d86ff]"
+                                onClick={() => deleteProfile()}
+                            >
+                                Hapus Akun
+                            </div>
+                        </div>
+                    </label>
                 </div>
             </div>
-
         </Layout>
     )
 }

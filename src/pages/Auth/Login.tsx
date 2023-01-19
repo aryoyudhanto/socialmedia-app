@@ -79,7 +79,7 @@ const Login = () => {
                                 login
                             </button>
                             <div className="flex justify-center underline my-3">
-                                <Link to="/">
+                                <Link to="/register">
                                     <p className="text-[#0D99FF] hover:text-[#0d86ff] font-semibold text-sm">Sign Up</p>
                                 </Link>
                             </div>

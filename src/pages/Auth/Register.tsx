@@ -79,7 +79,7 @@ const Register = () => {
                                 <div className="">
                                     <input className="bg-white appearance-none border-2 border-[#D9D9D9] rounded-2xl w-full py-2 px-4 text-black leading-tight focus:outline-none focus:bg-white h-14" id="inline-full-username"
                                         type="text"
-                                        placeholder='@username'
+                                        placeholder='(a-z & 0-9)'
                                         onChange={(e) => { setUserName(e.target.value) }}
                                     />
                                 </div>

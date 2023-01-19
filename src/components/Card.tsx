@@ -6,30 +6,45 @@ import Button from "./Button";
 
 interface CardProps {
   name?: string;
+  username?: string;
   image?: string;
   id?: number;
   labelButton?: string;
   create_at?: string;
   content?: string;
+  biodata?: string;
+  onClickProfil?: () => void;
 }
 
-export const CardProfil = () => {
+export const CardProfil: FC<CardProps> = ({
+  image,
+  name,
+  username,
+  biodata,
+  labelButton,
+  onClickProfil,
+}) => {
   return (
     <div className="card w-full bg-white shadow-lg flex flex-col items-center">
       <div className="flex h-1/2">
         <img
-          src="https://i.pinimg.com/564x/d2/2c/46/d22c46d3557f5c699187826a8c224751.jpg"
+          src={
+            image
+              ? image
+              : "https://i.pinimg.com/564x/d2/2c/46/d22c46d3557f5c699187826a8c224751.jpg"
+          }
           className="w-[150px] h-[150px] mx-auto mt-16 rounded-full"
         />
       </div>
       <div className="card-body items-center text-center pt-3">
-        <h2 className="card-title text-black font-bold">Nama Account</h2>
-        <h3 className="text-black font-medium">@username</h3>
-        <p className="text-black font-thin text-sm">Biodata singkat user</p>
+        <h2 className="card-title text-black font-bold">{name}</h2>
+        <h3 className="text-black font-medium">@{username}</h3>
+        <p className="text-black font-thin text-sm">{biodata}</p>
         <div className="card-actions pt-3">
           <Button
             buttonSet="bg-[#0D99FF] border-none text-white"
-            label="See Profil"
+            label={labelButton}
+            onClick={onClickProfil}
           />
         </div>
       </div>

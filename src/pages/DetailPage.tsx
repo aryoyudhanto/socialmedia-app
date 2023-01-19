@@ -6,7 +6,7 @@ import axios from "axios"
 import { CardStatusImage } from "components/Card";
 import Layout from "components/Layout";
 
-import {showType} from "utils/type/Types"
+import { showType } from "utils/type/Types"
 
 const DetailPage = () => {
   const [postData, setPostData] = useState<showType[]>([]);
@@ -35,6 +35,12 @@ const DetailPage = () => {
       .finally(() => { });
   }
 
+  useEffect(() => {
+    if (!cookie.token) {
+      navigate("/");
+    }
+  }, [cookie.token]);
+  
   return (
     <Layout>
       <div className="flex flex-col justify-center w-full h-auto items-center pt-5">

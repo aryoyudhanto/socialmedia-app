@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 import { CardProfil, CardRecomendation, CardStatusImage, CardStatusInput } from "components/Card";
@@ -106,7 +107,27 @@ const LandingPage = () => {
         },
       })
       .then((res) => {
-        fetchData()
+        Swal.fire({
+          title: "Are you sure want to delete post?",
+          // text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Yes",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "No",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              text: "Delete successfully",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            fetchData()
+          }
+        });        
       })
       .catch((error) => {
       })

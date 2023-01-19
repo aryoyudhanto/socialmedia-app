@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import React, { useState } from 'react'
+import Swal from 'sweetalert2'
 import axios from 'axios'
 
 import login from 'assets/bg-login1.png'
@@ -30,12 +31,22 @@ const Login = () => {
         axios.post('http://54.254.27.167/login', body)
             .then((res) => {
                 const { token } = res.data
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    text: "Login successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
                 setCookie("token", token)
-                alert('berhasil login')
                 navigate('/')
             })
             .catch((err) => {
-                alert('gagal login')
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Wrong username/email or password",
+                });
             })
     }
 

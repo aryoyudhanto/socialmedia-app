@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
+import Swal from 'sweetalert2'
 import axios from 'axios'
 
 import register from 'assets/bg-register1.png'
@@ -20,11 +21,21 @@ const Register = () => {
             password: password,
         })
             .then((res) => {
-                alert('berhasil register')
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    text: "Register successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
                 navigate('/login')
             })
             .catch((err) => {
-                alert('gagal register')
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Register failed",
+                });
             })
 
     }

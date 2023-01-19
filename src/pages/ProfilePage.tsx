@@ -1,6 +1,7 @@
 import useCookies from 'react-cookie/cjs/useCookies'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import Swal from 'sweetalert2'
 import axios from 'axios'
 
 import { Modals } from 'components/Modals'
@@ -46,6 +47,39 @@ const ProfilePage = () => {
         myProfileHandler();
     }, []);
 
+    function editProfile() {
+        axios.put(`https://www.projectfebe.online/users`, {
+            name: fullName,
+            email: email,
+            username: userName,
+            photo: photo,
+            date_of_birth: dateOfBirth,
+            phone_number: phoneNumber,
+            about_me: bio,
+            password: password,
+        }, {
+            headers: {
+                Authorization: `Bearer ${cookie.token}`,
+                "Content-Type": "multipart/form-data",
+            },
+        })
+            .then((res) => {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Update Succes",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                myProfileHandler()
+            }).catch((err) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Update failed",
+                });
+            })
+    }
     // function editProfile() {
     //     const formData = new FormData();
     //     let key: keyof typeof profileData;
@@ -53,14 +87,7 @@ const ProfilePage = () => {
     //         formData.append(key, profileData[key]);
     //     }
     //     axios.put(`https://www.projectfebe.online/users`, {
-    //         name: fullName,
-    //         email: email,
-    //         username: userName,
-    //         photo: photo,
-    //         date_of_birth: dateOfBirth,
-    //         phone_number: phoneNumber,
-    //         about_me: bio,
-    //         password: password,
+    //         formData
     //     }, {
     //         headers: {
     //             Authorization: `Bearer ${cookie.token}`,
@@ -74,27 +101,6 @@ const ProfilePage = () => {
     //             alert("gagal")
     //         })
     // }
-    function editProfile() {
-        const formData = new FormData();
-        let key: keyof typeof profileData;
-        for (key in profileData) {
-            formData.append(key, profileData[key]);
-        }
-        axios.put(`https://www.projectfebe.online/users`, {
-            formData
-        }, {
-            headers: {
-                Authorization: `Bearer ${cookie.token}`,
-                "Content-Type": "multipart/form-data",
-            },
-        })
-            .then((res) => {
-                alert("berhasil")
-                myProfileHandler()
-            }).catch((err) => {
-                alert("gagal")
-            })
-    }
 
     function deleteProfile() {
         axios.delete(`http://54.254.27.167/users`, {
@@ -102,11 +108,35 @@ const ProfilePage = () => {
                 Authorization: `Bearer ${cookie.token}`,
             },
         }).then((res) => {
-            alert("berhasil")
-            removeCookie("token")
-            navigate(0)
+            Swal.fire({
+                title: "Are you sure want to delete account?",
+                // text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Yes",
+                cancelButtonColor: "#d33",
+                cancelButtonText: "No",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        text: "Delete successfully",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    removeCookie("token")
+                    navigate(0)
+                }
+            });
+
         }).catch((err) => {
-            alert("gagal")
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Delete account failed",
+            });
         })
     }
 
@@ -143,11 +173,20 @@ const ProfilePage = () => {
                                     <div className='mx-auto my-5 flex justify-center'>
                                         <p className='text-md text-black'>@{profileData.username}</p>
                                     </div>
-                                    <div className='mx-auto my-5 flex justify-center w-3/4 h-1/2'>
-                                        <div className='boder-1 bg-white w-full rounded-xl flex items-center justify-center'>
-                                            <p className='text-center text-black'>{profileData.about_me}</p>
-                                        </div>
-                                    </div>
+                                    {
+                                        profileData.about_me ? (
+                                            <>
+                                                <div className='mx-auto my-5 flex justify-center w-3/4 h-1/2'>
+                                                    <div className='boder-1 bg-white w-full rounded-xl flex items-center justify-center'>
+                                                        <p className='text-center text-black'>{profileData.about_me}</p>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        ):(
+                                            null
+                                        )
+                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -254,8 +293,8 @@ const ProfilePage = () => {
                                     type="text"
                                     placeholder="Full Name"
                                     // value={fullName}
-                                    // onChange={(e) => setFullName(e.target.value)}
-                                    onChange={(e) => handleChange(e.target.value, 'name')}
+                                    onChange={(e) => setFullName(e.target.value)}
+                                // onChange={(e) => handleChange(e.target.value, 'name')}
                                 />
                             </div>
                         }
@@ -267,8 +306,8 @@ const ProfilePage = () => {
                                     type="email"
                                     placeholder="Email"
                                     // value={email}
-                                    // onChange={(e) => setEmail(e.target.value)}
-                                    onChange={(e) => handleChange(e.target.value, 'name')}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                // onChange={(e) => handleChange(e.target.value, 'name')}
                                 />
                             </div>
                         }
@@ -280,8 +319,8 @@ const ProfilePage = () => {
                                     type="text"
                                     placeholder="Username"
                                     // value={userName}
-                                    // onChange={(e) => setUserName(e.target.value)}
-                                    onChange={(e) => handleChange(e.target.value, 'username')}
+                                    onChange={(e) => setUserName(e.target.value)}
+                                // onChange={(e) => handleChange(e.target.value, 'username')}
                                 />
                             </div>
                         }
@@ -293,8 +332,8 @@ const ProfilePage = () => {
                                     type="text"
                                     placeholder="Date Of Birth"
                                     // value={dateOfBirth}
-                                    // onChange={(e) => setDateOfBirth(e.target.value)}
-                                    onChange={(e) => handleChange(e.target.value, 'date_of_birth')}
+                                    onChange={(e) => setDateOfBirth(e.target.value)}
+                                // onChange={(e) => handleChange(e.target.value, 'date_of_birth')}
                                 />
                             </div>
                         }
@@ -306,8 +345,8 @@ const ProfilePage = () => {
                                     type="text"
                                     placeholder="0812xxxxxxxx"
                                     // value={phoneNumber}
-                                    // onChange={(e) => setPhoneNumber(e.target.value)}
-                                    onChange={(e) => handleChange(e.target.value, 'phone_number')}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                // onChange={(e) => handleChange(e.target.value, 'phone_number')}
                                 />
                             </div>
                         }
@@ -320,8 +359,8 @@ const ProfilePage = () => {
                                     type="text"
                                     placeholder="About Me"
                                     // value={bio}
-                                    // onChange={(e) => setBio(e.target.value)}
-                                    onChange={(e) => handleChange(e.target.value, 'about_me')}
+                                    onChange={(e) => setBio(e.target.value)}
+                                // onChange={(e) => handleChange(e.target.value, 'about_me')}
                                 />
                             </div>
                         }
@@ -332,8 +371,8 @@ const ProfilePage = () => {
                                     className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                                     type="password"
                                     placeholder="Password"
-                                    // onChange={(e) => setPassword(e.target.value)}
-                                    onChange={(e) => handleChange(e.target.value, 'password')}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                // onChange={(e) => handleChange(e.target.value, 'password')}
                                 />
                             </div>
                         }
@@ -348,7 +387,7 @@ const ProfilePage = () => {
                                 className="w-1/3 text-lg mx-10 capitalize bg-[#0D99FF] border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-[#0d86ff]"
                                 onClick={() => deleteProfile()}
                             >
-                                Hapus Akun
+                                Delete Account
                             </div>
                         </div>
                     </label>

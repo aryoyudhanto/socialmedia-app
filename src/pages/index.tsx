@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useCookies from "react-cookie/cjs/useCookies";
 import { useNavigate } from "react-router-dom";
+import { FiMoreHorizontal } from "react-icons/fi"
 import axios from "axios";
 
 import {
@@ -14,6 +15,7 @@ import Layout from "components/Layout";
 
 import { PostingType, UserType } from "utils/type/Types";
 import Button from "components/Button";
+import { Modals2 } from "components/Modals";
 
 interface ProfileType {
   id?: number;
@@ -31,6 +33,8 @@ const LandingPage = () => {
   const [user, setUser] = useState<UserType[]>([]);
   const [profileData, setProfileData] = useState<ProfileType>({});
   const [cookie, setCookie] = useCookies<string>([]);
+  const [content, setContent] = useState<string>("")
+  const [photo, setPhoto] = useState<File>()
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,7 +53,7 @@ const LandingPage = () => {
     axios
       .get("https://www.projectfebe.online/contents")
       .then((postData) => {
-        //console.log(postData);
+        console.log(postData);
         const { data } = postData.data;
         setPostData(data);
       })
@@ -91,6 +95,71 @@ const LandingPage = () => {
       .finally(() => { });
   }
 
+  function postContent() {
+    axios.post(`https://www.projectfebe.online/contents`, {
+      content: content,
+      image: photo,
+    },
+      {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+        fetchData()
+        navigate(0)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  function deletePost(id: number) {
+    axios
+      .delete(`https://www.projectfebe.online/contents/${id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        fetchData()
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  function editContent() {
+    axios.post(`https://www.projectfebe.online/contents`, {
+      content: content,
+      image: photo,
+    },
+      {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  useEffect(() => {
+    if (!cookie.token) {
+      navigate("/");
+    }
+  }, [cookie.token]);
+
+  function onClickDetail(id: number){
+    navigate(`/post/${id}`);
+  }
+  console.log("status", content)
+
   return (
     <Layout>
       <div className="container mx-auto">
@@ -129,12 +198,15 @@ const LandingPage = () => {
           </div>
           <div className="basis-1/2 flex-col justify-center py-5">
             {
-              cookie.token? (
-                <CardStatusInput />
-              ):(
+              cookie.token ? (
+                <CardStatusInput
+                  onChange={(e) => setContent(e.target.value)}
+                  onClick={() => postContent()}
+                />
+              ) : (
                 null
               )
-            }            
+            }
 
             <br />
             {postData.map((postData) => (
@@ -142,9 +214,47 @@ const LandingPage = () => {
                 key={postData.id}
                 name={postData.who_post}
                 id={postData.id}
-                image={postData.image}
+                image_post={postData.image}
                 create_at={postData.created_at?.substring(0, 10)}
                 content={postData.content}
+                comment={
+                  <>
+                    {/* <div className="flex h-1/2 p-1">
+                      <img
+                        src={
+                          postData.image
+                            ? postData.image
+                            : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                        }
+                        className="w-[50px] h-[50px] rounded-full"
+                      />
+                    </div>
+                    <div className="px-2">
+                      <h3 className="text-black font-normal text-sm p-3 w-full">
+                        {"sad"}
+                      </h3>
+                    </div>
+                    <div className="dropdown justify-end">
+                      <label tabIndex={0} className="btn btn-ghost btn-circle">
+                        <FiMoreHorizontal size={16} />
+                      </label>
+                      <ul
+                        tabIndex={0}
+                        className="dropdown-content menu p-2 shadow bg-white text-black rounded-box w-52"
+                      >
+                        <li>
+                          <a>Edit Comment</a>
+                        </li>
+                        <li>
+                          <a>Delete Comment</a>
+                        </li>
+                      </ul>
+                    </div> */}
+                  </>
+                }
+                onClickDeletePost={() => deletePost(postData.id)}
+              // onClickEditPost={}
+              onClickDetail={()=>onClickDetail(postData.id)}
               />
             ))}
           </div>
@@ -181,8 +291,6 @@ const LandingPage = () => {
                 </div>
               )
             }
-
-            { }
           </div>
         </div>
       </div>

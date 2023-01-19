@@ -8,6 +8,7 @@ import { FC } from "react";
 
 import { Input, TextArea } from "./Input";
 import Button from "./Button";
+import { Modals } from "./Modals";
 
 interface CardProps {
   name?: string;
@@ -19,7 +20,12 @@ interface CardProps {
   create_at?: string;
   content?: string;
   biodata?: string;
-  comment?: string;
+  comment?: any;
+  onChange?: (e: any) => void
+  onClick?: () => void;
+  onClickEditPost?: () => void
+  onClickDeletePost?: () => void
+  onClickDetail?: () => void
 }
 
 export const CardProfil: FC<CardProps> = ({
@@ -79,7 +85,7 @@ export const CardRecomendation: FC<CardProps> = ({ name, image }) => {
   );
 };
 
-export const CardStatusInput: FC<CardProps> = ({ image }) => {
+export const CardStatusInput: FC<CardProps> = ({ image, onChange, onClick }) => {
   return (
     <div className="card w-full h-auto bg-white flex flex-col shadow-lg">
       <div className="card-body">
@@ -98,16 +104,18 @@ export const CardStatusInput: FC<CardProps> = ({ image }) => {
             id={""}
             label={""}
             placeholder="What on your mind"
-            inputSet={"m-3 h-48"}
+            inputSet={"m-3 h-48 text-black"}
+            onChange={onChange}
           />
         </div>
         <div className="card-actions justify-end">
-          <button className="btn btn-circle btn-ghost">
-            <FiImage size={30} color="black" />
+          <button className="btn btn-circle btn-ghost text-[#0D99FF]">
+            <FiImage size={30} />
           </button>
           <Button
             buttonSet="w-24 bg-[#0D99FF] border-none text-white"
             label="Posting"
+            onClick={onClick}
           />
         </div>
       </div>
@@ -229,6 +237,9 @@ export const CardStatusImage: FC<CardProps> = ({
   comment,
   image,
   image_post,
+  onClickEditPost,
+  onClickDeletePost,
+  onClickDetail,
 }) => {
   return (
     <div className="card w-full bg-white pb-5 shadow-md my-5">
@@ -239,26 +250,31 @@ export const CardStatusImage: FC<CardProps> = ({
               src={
                 image
                   ? image
-                  : "https://i.pinimg.com/564x/98/d6/3a/98d63acd8c2628165d4d65f8c53618b0.jpg"
+                  : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
               }
-              className="w-[50px] h-[50px] rounded-full"
+              className="w-[50px] h-[50px] rounded-full" onClick={onClickDetail}
             />
           </div>
         </div>
         <div className="w-96 pt-5 ">
-          <h6 className="text-black font-bold">{name}</h6>
-          <p className="text-sm">{create_at}</p>
-          <h3 className="text-black font-semibold text-lg pt-5">{content}</h3>
+          <h6 className="text-black font-bold text-xl" onClick={onClickDetail}>{name}</h6>
+          <p className="text-sm" onClick={onClickDetail}>{create_at}</p>
+          <h3 className="text-black font-normal text-md pt-5" onClick={onClickDetail}>{content}</h3>
           <figure className="w-auto h-auto py-5 ">
-            <img
-              src={
-                image_post
-                  ? image_post
-                  : "https://i.pinimg.com/736x/86/6b/7b/866b7bd1c2a18c2cb02a003ef920765e.jpg"
-              }
-              alt="Shoes"
-              className="rounded-xl"
-            />
+            {image_post ? (
+              <>
+                <img
+                  src={
+                    image_post
+                  }
+                  className="rounded-xl"
+                  onClick={onClickDetail}
+                />
+              </>
+            ) : (
+              null
+            )
+            }
           </figure>
           <button className="btn btn-ghost gap-2 text-xs normal-case ">
             <FiMessageCircle size={16} />
@@ -275,14 +291,32 @@ export const CardStatusImage: FC<CardProps> = ({
               className="dropdown-content menu p-2 shadow bg-white text-black rounded-box w-52"
             >
               <li>
-                <a>Edit Post</a>
+                <label htmlFor={`my-modal-1`} className={`normal-case bg-transparent flex w-full`}
+                // onClick={() => setIdtask(item.id)}
+                >
+                  <div className="flex flex-col cursor-pointer">
+                    <div
+                      className="btn btn-ghost normal-case font-normal"
+                    >
+                      Edit Profile
+                    </div>
+                  </div>
+                </label>
               </li>
               <li>
-                <a>Delete Post</a>
+                <p className="btn btn-ghost normal-case font-normal w-3/4"
+                  onClick={onClickDeletePost}>Delete Post</p>
               </li>
             </ul>
           </div>
         </div>
+        <Modals
+          no={1}
+          onClick={() => console.log()}
+          titleModal={"Edit Profile"}
+          tombol1={"Cancel"}
+          tombol2={"Save"}
+        />
       </div>
       <div className="card w-120 bg-slate-100 mx-10 pt-5 pb-2 px-5">
         <div className="flex justify-around">
@@ -291,7 +325,7 @@ export const CardStatusImage: FC<CardProps> = ({
               src={
                 image
                   ? image
-                  : "https://i.pinimg.com/736x/86/6b/7b/866b7bd1c2a18c2cb02a003ef920765e.jpg"
+                  : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
               }
               className="w-[50px] h-[50px] rounded-full"
             />
@@ -311,37 +345,7 @@ export const CardStatusImage: FC<CardProps> = ({
           </button>
         </div>
         <div className="flex justify-start">
-          <div className="flex h-1/2 p-1">
-            <img
-              src={
-                image
-                  ? image
-                  : "https://i.pinimg.com/736x/86/6b/7b/866b7bd1c2a18c2cb02a003ef920765e.jpg"
-              }
-              className="w-[50px] h-[50px] rounded-full"
-            />
-          </div>
-          <div className="px-2">
-            <h3 className="text-black font-normal text-sm p-3 w-full">
-              {comment}
-            </h3>
-          </div>
-          <div className="dropdown justify-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle">
-              <FiMoreHorizontal size={16} />
-            </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu p-2 shadow bg-white text-black rounded-box w-52"
-            >
-              <li>
-                <a>Edit Comment</a>
-              </li>
-              <li>
-                <a>Delete Comment</a>
-              </li>
-            </ul>
-          </div>
+          {comment}
         </div>
       </div>
     </div>

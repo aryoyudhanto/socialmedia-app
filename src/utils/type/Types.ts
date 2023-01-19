@@ -4,6 +4,7 @@ export interface PostingType {
   content: string;
   image: string;
   created_at: string;
+  Comments: string;
 }
 
 export interface UserType {

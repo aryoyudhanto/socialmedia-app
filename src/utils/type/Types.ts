@@ -5,6 +5,7 @@ export interface PostingType {
   image: string;
   created_at: string;
   Comments: string;
+  photo: string
 }
 
 export interface UserType {

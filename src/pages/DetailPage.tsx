@@ -30,7 +30,6 @@ const DetailPage = () => {
         setPostData(data);
       })
       .catch((error) => {
-        alert(error.toString());
       })
       .finally(() => { });
   }
@@ -40,7 +39,7 @@ const DetailPage = () => {
       navigate("/");
     }
   }, [cookie.token]);
-  
+
   return (
     <Layout>
       <div className="flex flex-col justify-center w-full h-auto items-center pt-5">

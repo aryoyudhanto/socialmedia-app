@@ -24,10 +24,18 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (cookie.token) {
+      userData();
+      profile();
+    }
     fetchData();
-    userData();
-    profile();
   }, []);
+
+  // useEffect(() => {
+  //     userData();
+  //     profile();    
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     if (!cookie.token) {
@@ -127,7 +135,7 @@ const LandingPage = () => {
             });
             fetchData()
           }
-        });        
+        });
       })
       .catch((error) => {
       })

@@ -23,7 +23,7 @@ const ProfilePage = () => {
     const navigate = useNavigate()
 
     async function myProfileHandler() {
-        await axios.get('http://54.254.27.167/myprofile', {
+        await axios.get('https://www.projectfebe.online/myprofile', {
             headers: {
                 Authorization: `Bearer ${cookie.token}`,
             },
@@ -103,7 +103,7 @@ const ProfilePage = () => {
     // }
 
     function deleteProfile() {
-        axios.delete(`http://54.254.27.167/users`, {
+        axios.delete(`https://www.projectfebe.online/users`, {
             headers: {
                 Authorization: `Bearer ${cookie.token}`,
             },

@@ -14,7 +14,7 @@ const Register = () => {
 
     function registerHandler(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        axios.post('http://54.254.27.167/register', {
+        axios.post('https://www.projectfebe.online/register', {
             name: fullName,
             username: userName,
             email: email,

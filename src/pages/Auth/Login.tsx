@@ -28,7 +28,7 @@ const Login = () => {
                 password: password,
             }
         }
-        axios.post('http://54.254.27.167/login', body)
+        axios.post('https://www.projectfebe.online/login', body)
             .then((res) => {
                 const { token } = res.data
                 Swal.fire({

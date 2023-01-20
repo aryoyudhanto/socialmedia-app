@@ -220,6 +220,7 @@ const LandingPage = () => {
                 <CardStatusInput
                   onChange={(e) => setContent(e.target.value)}
                   onClick={() => postContent()}
+                  image={profileData.photo}
                 />
               ) : (
                 null
@@ -235,6 +236,7 @@ const LandingPage = () => {
                       key={postData.id}
                       name={postData.who_post}
                       id={postData.id}
+                      image={postData.photo}
                       image_post={postData.image}
                       create_at={postData.created_at?.substring(0, 10)}
                       content={postData.content}

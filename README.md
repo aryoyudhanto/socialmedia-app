@@ -2,10 +2,13 @@
 
 ## About Project
 
+<img src="https://github.com/aryoyudhanto/group1-socialmedia-app/blob/main/src/assets/Screenshot%20(256).png"alt="Logo">
+<img src="https://github.com/aryoyudhanto/group1-socialmedia-app/blob/main/src/assets/Screenshot%20(253).png"alt="Logo">
+
 This is is a website social media who want an internet-based form of communication. Social media platforms allow users to have conversations, share information and create web content.
 
-Here link for UI Desain: [figma](https://www.figma.com/file/hBmWNkNqQxSV7GnCNZDgek/Social-Media-App?node-id=0%3A1&t=9ZpLZXIpDHB03Ifa-1)
-Here link for live demo: [vercel](https://socialmedia-app-umber.vercel.app/)
+* Here link for UI Desain: [figma](https://www.figma.com/file/hBmWNkNqQxSV7GnCNZDgek/Social-Media-App?node-id=0%3A1&t=9ZpLZXIpDHB03Ifa-1)
+* Here link for live demo: [vercel](https://socialmedia-app-umber.vercel.app/)
 
 * Group 1 Project 1: Social Media Apps Project
 
@@ -55,4 +58,11 @@ Open [http://localhost:5173/](http://localhost:5173/) with your browser to see t
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-.
+
+
+### Author
+
+1. Ari Muhammad Rizal (BE) 
+2. Devangga Wiku (BE) 
+3. Adhista Dera Hardaningtyas (FE) 
+4. Aryo Yudhanto (FE) 

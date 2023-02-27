@@ -2,7 +2,7 @@
 
 ## About Project
 
-<img src="https://github.com/aryoyudhanto/socialmedia-app/blob/main/src/assets/Screenshot%20(256).png"alt="Logo" />
+<img src="https://github.com/aryoyudhanto/socialmedia-app/blob/main/src/assets/Screenshot%20(256).png" alt="Logo" />
 
 This is is a website social media who want an internet-based form of communication. Social media platforms allow users to have conversations, share information and create web content.
 
